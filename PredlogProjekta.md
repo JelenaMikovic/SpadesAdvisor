@@ -61,7 +61,7 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
 
   - Preporuka na osnovu vrste restorana
     1. Korisnik je ocenio restoran sa visokom ocenom, restoran ide na listu pozitivno ocenjenih restorana
-    2. Vrsta tog restorana se stavlja u listu vrsta restorana koje voli korisnik
+    2. Vrsta tog restorana se stavlja u listu vrsta restorana koje preferira korisnik
     3. Na osnovu vrste se preporucuje restoran
   
   - Preporuka na osnovu cene
@@ -71,7 +71,7 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
   
   - Preporuka na osnovu lokacije
     1. Korisnik je dao pozitivnu ocenu restoranu na odredjenoj lokaciji, restoran ide na listu restorana na toj lokaciji
-    2. Lokacija tog restorana se stavlja u listu lokacija koje korisnik voli
+    2. Lokacija tog restorana se stavlja u listu lokacija koje korisnik preferira
     3. Na osnovu lokacije se preporucuje restoran
    
   - Preporuka na osnovu radnog vremena
@@ -81,29 +81,33 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
 
 <h4>Backward chaining: </h4>
 
-  - <b>Identifikacija preferiranih vrsta hrane na osnovu preporučenih restorana:</b>
-    
-    1. Korisnik dobija preporuke za restorane od strane sistema.
-    2. Korisnik istražuje preporučene restorane i označava nekoliko odabranih restorana kao omiljene.
-    3. Na osnovu ovih omiljenih restorana, sistem koristi backward chaining da bi identifikovao vrste hrane koje korisnik preferira.
-    4. Na primer, ako su svi omiljeni restorani italijanski restorani, sistem zaključuje da korisnik preferira italijansku hranu.
-    5. Nakon identifikacije preferiranih vrsta hrane, sistem može koristiti ove informacije za dalje generisanje preporuka za restorane iste ili slične vrste hrane.
+  - Preporuka restorana na osnovu ocene korisnika
+    1. Korisnik je dao visoke ocene restoranima u određenim lokacijama.
+    2. Analizira se lokacija restorana koji su dobili visoke ocene od strane korisnika.
+    3. Na osnovu lokacija restorana sa visokim ocenama, sistem identifikuje preferiranu lokaciju za izlazak korisnika.
+    4. Sistem generise preporuke restorana na toj lokaciji.
   
-  - <b> ? </b>
+  - Preporuka restorana na osnovu omiljenih restorana
+    1. Korisnik označava nekoliko restorana kao omiljene.
+    2. Analizira se vrste hrane koje su dostupne u omiljenim restoranima
+    3. Na osnovu vrsta hrane u omiljenim restoranima, sistem identifikuje preferiranu vrstu hrane korisnika.
+    4. Sistem generise preporuke restorana sa tom vrstom hrane.
 
 <h4>CEP: </h4>
 
-  - Ako je korisnik u poslednjih 24h trazio restorane odredjene vrste, generisi preporuku za najbolje ocenjene restorane te vrste.
-  - Ako je korisnik u poslednja 3 dana trazio restorane na odredjenoj lokaciji, generisi preporuku za najbolje ocenjene restorane na toj lokaciji.
-  - Ako je korisnik je u poslednjih 48h ocenio više restorana sa niskim ocenama, generisi preporuku za najbolje ocenjene restorane kako bi poboljsao iskustvo korisnika.
-  - Ako je korisnik u poslednjih 30 dana dao preko pet recenzija ocene 1, opomenuti korisnika.
-  - Ako je korisnik opomenut i u poslednjih 30 dana  dao preko 10 recenzija ocene 1, blokirati korisnika.
-  - Ako je korisnik u poslednjih 7 dana trazio restorane sa visokim/niskim cenama, generisi preporuku za restorane sa visokim/niskim cenama.
+  - Preporuka restorana na osnovu nedavnih poseta korisnika i preferirane vrste hrane
+    1. Korisnik je u poslednjih 7 dana posetio 2 ili više restorana
+    2. Analizira se vrsta hrane koju je korisnik konzumirao tokom poseta restoranima.
+    3. Generiše se preporuka za restorane koji nude istu ili sličnu vrstu hrane kao što je konzumirana tokom nedavnih poseta korisnika.
+
+  - Preporuka restorana na osnovu nedavnih ocena korisnika i preferirane cene
+    1. Korisnik je u poslednjih 48 sati dao 1 ili više pozitivnih ocena restoranima.
+    2. Analizira se preferirana cena korisnika za obrok.
+    3. Generiše se preporuka za najbolje ocenjene restorane koji odgovaraju preferiranoj ceni korisnika.
   
 <h4>Query: </h4>
 
-  - Izvestaj prikazuje najbolje ocenjene restorane.
-  - Izvestaj prikazuje restorane sa najvise recenzija.
-  - Izvestaj prikazuje vrste hrane sa najvise recenzija.
   - Izvestaj prikazuje koje vrste hrane korisnik najcesce posecuje.
-  - Izvestaj prikazuje korisnikove najbolje ocenjene restorane.
+  - Izvestaj prikazuje korisnikove omiljene restorane.
+  - Izvestaj prikazuje koji cenovni rang korisnik najcesce bira.
+  - Izvestaj prikazuje koje radno vreme korisnik najcesce bira.
