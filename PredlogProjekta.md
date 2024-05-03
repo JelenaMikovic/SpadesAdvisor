@@ -81,17 +81,23 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
 
 <h4>Backward chaining: </h4>
 
-  - Preporuka restorana na osnovu ocene korisnika
-    1. Korisnik je dao visoke ocene restoranima u određenim lokacijama.
-    2. Analizira se lokacija restorana koji su dobili visoke ocene od strane korisnika.
-    3. Na osnovu lokacija restorana sa visokim ocenama, sistem identifikuje preferiranu lokaciju za izlazak korisnika.
-    4. Sistem generise preporuke restorana na toj lokaciji.
-  
-  - Preporuka restorana na osnovu omiljenih restorana
-    1. Korisnik označava nekoliko restorana kao omiljene.
-    2. Analizira se vrste hrane koje su dostupne u omiljenim restoranima
-    3. Na osnovu vrsta hrane u omiljenim restoranima, sistem identifikuje preferiranu vrstu hrane korisnika.
-    4. Sistem generise preporuke restorana sa tom vrstom hrane.
+  - Pretraga kuvara i restorana na osnovu Michelin zvezda koje je restoran dobio.
+    
+![bkwd1 drawio](https://github.com/JelenaMikovic/RestaurantReccomendation/assets/24361522/8926f90b-494d-4148-b2da-291489ab5ddc)
+
+<h4>Query: </h4>
+
+  - Izvestaj prikazuje koje vrste hrane korisnik najcesce posecuje.
+  - Izvestaj prikazuje korisnikove omiljene restorane.
+  - Izvestaj prikazuje koji cenovni rang korisnik najcesce bira.
+  - Izvestaj prikazuje koje radno vreme korisnik najcesce bira.
+
+<h4>Template: </h4>
+
+  - Admin podesava uslove za trending restorane te nedelje:
+      - Podesava se uslov za broj ostavljenih recenzija (npr. makar 10 ocena u prethodnih mesec dana)
+      - Podesava se uslov za minimalnu ocenu restorana (npr. minimum ocena 4.5)
+      - Podesava se uslov za vrstu restorana (npr. nedelja azijske hrane)
 
 <h4>CEP: </h4>
 
@@ -105,9 +111,3 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
     2. Analizira se preferirana cena korisnika za obrok.
     3. Generiše se preporuka za najbolje ocenjene restorane koji odgovaraju preferiranoj ceni korisnika.
   
-<h4>Query: </h4>
-
-  - Izvestaj prikazuje koje vrste hrane korisnik najcesce posecuje.
-  - Izvestaj prikazuje korisnikove omiljene restorane.
-  - Izvestaj prikazuje koji cenovni rang korisnik najcesce bira.
-  - Izvestaj prikazuje koje radno vreme korisnik najcesce bira.
