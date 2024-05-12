@@ -1,0 +1,24 @@
+package cep;
+
+rule "isti kupac kupio bar 3 nova Samsung telefona u posljednjih 5 minuta"
+when
+    $kupac: Kupac()
+    Number(intValue >= 3) from accumulate(
+        Narudzbina(this.kupac == $kupac, 
+        uredjaj.getCena() > 800, u
+        redjaj.jelTablet() == false, 
+        uredjaj.getMarka() == "Samsung)
+        over window: time(5m), count()
+    )
+then
+    insert(new Kupon($kupac, 10))
+end
+
+rule "ukoliko kupi tablet, na cenu se primenjuje kupon"
+no-loop
+when
+    $n: Narudzbina(uredjaj.jelTablet() == true,
+    $kupac: kupac)
+    $kupon: Kupon(kupac == $kupac)
+then
+    delete($kupon0);
