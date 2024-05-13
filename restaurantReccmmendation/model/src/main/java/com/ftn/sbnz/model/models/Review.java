@@ -5,12 +5,16 @@ public class Review {
     private long id;
     private User user;
     private Restaurant restaurant;
-    private int rating;
+    private double rating;
 
     public Review(long id, User user, Restaurant restaurant, int rating) {
         this.id = id;
         this.user = user;
         this.restaurant = restaurant;
+        this.rating = rating;
+    }
+
+    public Review(double rating) {
         this.rating = rating;
     }
 
@@ -27,7 +31,7 @@ public class Review {
         return restaurant;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
@@ -44,7 +48,7 @@ public class Review {
         this.restaurant = restaurant;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 }

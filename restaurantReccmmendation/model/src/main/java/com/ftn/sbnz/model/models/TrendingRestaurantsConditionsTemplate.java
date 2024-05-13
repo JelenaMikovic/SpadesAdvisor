@@ -1,11 +1,12 @@
 package com.ftn.sbnz.model.models;
 
 public class TrendingRestaurantsConditionsTemplate {
+
     private int minReviews;
     private double minRating;
-    private String cuisineType;
+    private CuisineType cuisineType;
 
-    public TrendingRestaurantsConditionsTemplate(int minReviews, double minRating, String cuisineType) {
+    public TrendingRestaurantsConditionsTemplate(int minReviews, double minRating, CuisineType cuisineType) {
         this.minReviews = minReviews;
         this.minRating = minRating;
         this.cuisineType = cuisineType;
@@ -27,11 +28,11 @@ public class TrendingRestaurantsConditionsTemplate {
         this.minRating = minRating;
     }
 
-    public String getCuisineType() {
+    public CuisineType getCuisineType() {
         return cuisineType;
     }
 
-    public void setCuisineType(String cuisineType) {
+    public void setCuisineType(CuisineType cuisineType) {
         this.cuisineType = cuisineType;
     }
 }
