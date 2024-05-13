@@ -1,24 +1,54 @@
 package cep;
 
-rule "isti kupac kupio bar 3 nova Samsung telefona u posljednjih 5 minuta"
-when
-    $kupac: Kupac()
-    Number(intValue >= 3) from accumulate(
-        Narudzbina(this.kupac == $kupac, 
-        uredjaj.getCena() > 800, u
-        redjaj.jelTablet() == false, 
-        uredjaj.getMarka() == "Samsung)
-        over window: time(5m), count()
-    )
-then
-    insert(new Kupon($kupac, 10))
-end
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-rule "ukoliko kupi tablet, na cenu se primenjuje kupon"
-no-loop
+rule "Recommend restaurant based on recent visits and preferred cuisine"
 when
-    $n: Narudzbina(uredjaj.jelTablet() == true,
-    $kupac: kupac)
-    $kupon: Kupon(kupac == $kupac)
+    $user: User()
+    accumulate(
+        Review(
+            $restaurant: restaurant,
+            user == $user,
+            $rating: rating
+        ) over window:time(7d),
+        $count : count($restaurant);
+        $count >= 2
+    )
+    $recentVisits: ArrayList() from collect(
+        Review(
+            $restaurant: restaurant,
+            user == $user
+        ) over window:time(7d)
+    )
+    $preferredCuisine: CuisineType() from $recentVisits.get(0).restaurant.getCuisineType()
 then
-    delete($kupon0);
+    ArrayList<Restaurant> recommendedRestaurants = new ArrayList<>();
+    for (Object review : $recentVisits) {
+        Restaurant visitedRestaurant = ((Review) review).getRestaurant();
+        CuisineType preferredCuisine = visitedRestaurant.getCuisineType();
+        for (Restaurant restaurant : RestaurantList.getAllRestaurants()) {
+            if (restaurant.getCuisineType().equals(preferredCuisine) && !visitedRestaurant.equals(restaurant)) {
+                recommendedRestaurants.add(restaurant);
+            }
+        }
+    }
+
+    Collections.sort(recommendedRestaurants, new Comparator<Restaurant>() {
+        @Override
+        public int compare(Restaurant r1, Restaurant r2) {
+            return Integer.compare(getReviewCount(r2), getReviewCount(r1));
+        }
+
+        private int getReviewCount(Restaurant restaurant) {
+            return restaurant.getReviews().size();
+        }
+    });
+
+    if (recommendedRestaurants.size() > 10) {
+        recommendedRestaurants.subList(10, recommendedRestaurants.size()).clear();
+    }
+
+    $user.setRecommendedRestaurants(recommendedRestaurants);
+end
