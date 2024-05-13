@@ -9,8 +9,9 @@ public class User {
     private String phoneNumber;
     private String email;
     private String password;
-    private ArrayList<Restaurant> favoriteRestaurants;
     private boolean isAdmin;
+    private ArrayList<Restaurant> favoriteRestaurants;
+    private ArrayList<Restaurant> recommendedRestaurants;
 
     public User(long id, String firstName, String lastName, String phoneNumber, String email, String password, boolean isAdmin) {
         this.id = id;
@@ -19,9 +20,11 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
-        this.favoriteRestaurants = new ArrayList<>();
         this.isAdmin = isAdmin;
+        this.favoriteRestaurants = new ArrayList<>();
+        this.recommendedRestaurants = new ArrayList<>();
     }
 
+    
 
 }
