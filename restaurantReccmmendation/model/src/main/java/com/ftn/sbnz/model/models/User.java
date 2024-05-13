@@ -1,16 +1,36 @@
 package com.ftn.sbnz.model.models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 import java.util.ArrayList;
 
+@Entity
+@Table(name = "Users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column
     private String firstName;
+    @Column
     private String lastName;
+    @Column
     private String phoneNumber;
+    @Column
     private String email;
+    @Column
     private String password;
+    @Column
     private boolean isAdmin;
+    @ManyToMany
     private ArrayList<Restaurant> favoriteRestaurants;
+    @ManyToMany
     private ArrayList<Restaurant> recommendedRestaurants;
 
     public User(long id, String firstName, String lastName, String phoneNumber, String email, String password, boolean isAdmin) {
