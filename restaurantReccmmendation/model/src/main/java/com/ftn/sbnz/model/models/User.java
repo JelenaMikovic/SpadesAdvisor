@@ -46,6 +46,10 @@ public class User {
         this.recommendedRestaurants = new ArrayList<>();
     }
 
+    public User() {
+        //TODO Auto-generated constructor stub
+    }
+
     public void addFavoriteRestaurant(Restaurant restaurant) {
         favoriteRestaurants.add(restaurant);
     }
