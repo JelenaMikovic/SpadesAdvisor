@@ -9,6 +9,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Users")
@@ -28,10 +29,10 @@ public class User {
     private String password;
     @Column
     private boolean isAdmin;
+    /*@ManyToMany
+    private List<Restaurant> favoriteRestaurants;
     @ManyToMany
-    private ArrayList<Restaurant> favoriteRestaurants;
-    @ManyToMany
-    private ArrayList<Restaurant> recommendedRestaurants;
+    private List<Restaurant> recommendedRestaurants;*/
 
     public User(long id, String firstName, String lastName, String phoneNumber, String email, String password, boolean isAdmin) {
         this.id = id;
@@ -41,17 +42,17 @@ public class User {
         this.email = email;
         this.password = password;
         this.isAdmin = isAdmin;
-        this.favoriteRestaurants = new ArrayList<>();
-        this.recommendedRestaurants = new ArrayList<>();
+        //this.favoriteRestaurants = new ArrayList<>();
+        //this.recommendedRestaurants = new ArrayList<>();
     }
 
-    public void addFavoriteRestaurant(Restaurant restaurant) {
+    /*public void addFavoriteRestaurant(Restaurant restaurant) {
         favoriteRestaurants.add(restaurant);
     }
 
     public void removeFavoriteRestaurant(Restaurant restaurant) {
         favoriteRestaurants.remove(restaurant);
-    }
+    }*/
 
     // Getters
     public long getId() {
@@ -82,13 +83,13 @@ public class User {
         return isAdmin;
     }
 
-    public ArrayList<Restaurant> getFavoriteRestaurants() {
+    /*public List<Restaurant> getFavoriteRestaurants() {
         return favoriteRestaurants;
     }
 
-    public ArrayList<Restaurant> getRecommendedRestaurants() {
+    public List<Restaurant> getRecommendedRestaurants() {
         return recommendedRestaurants;
-    }
+    }*/
 
     // Setters
     public void setId(long id) {
@@ -119,12 +120,12 @@ public class User {
         isAdmin = admin;
     }
 
-    public void setFavoriteRestaurants(ArrayList<Restaurant> favoriteRestaurants) {
+    /*public void setFavoriteRestaurants(ArrayList<Restaurant> favoriteRestaurants) {
         this.favoriteRestaurants = favoriteRestaurants;
     }
 
     public void setRecommendedRestaurants(ArrayList<Restaurant> recommendedRestaurants) {
         this.recommendedRestaurants = recommendedRestaurants;
-    }
+    }*/
 
 }
