@@ -57,6 +57,14 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
 
 
 <h2>Pravila</h2>
+<h4>Osnovna pravila: </h4>
+
+  - Ako korisnik je na odredjenoj lokaciji, preporuke na osnovu te lokacije.
+  - Ako je korisnik pusac, preporuke restorana koji dozvoljavaju pusenje.
+  - Ako je korisnik vegitarijanac, preporuke restorana koji imaju vegatarijanska jela.
+  - Ako korisnik zeli odredjenu vrstu hrane, preporuke te vrste hrane.
+
+
 <h4>Forward chaining: </h4>
 
   - Preporuka na osnovu vrste restorana
