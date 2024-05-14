@@ -37,6 +37,10 @@ public class Restaurant {
     @OneToMany
     private List<Review> reviews;
 
+    public Restaurant(){
+        
+    }
+
     public Restaurant(long id, CuisineType cuisineType, String location, double price, String openingHour, String closingHour, boolean isVegetarianFriendly, boolean isSmokerFriendly) {
         this.id = id;
         this.cuisineType = cuisineType;

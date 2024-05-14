@@ -29,6 +29,10 @@ public class Review {
         this.rating = rating;
     }
 
+    public Review(){
+        
+    }
+
     // Getters
     public long getId() {
         return id;

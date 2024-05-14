@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ftn.sbnz.model.models.CuisineType;
@@ -13,24 +14,24 @@ import com.ftn.sbnz.model.models.Restaurant;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     
     @Query("SELECT r FROM Restaurant r " +
-           "WHERE (:minPrice IS NULL OR r.price >= :minPrice) " +
-           "AND (:maxPrice IS NULL OR r.price <= :maxPrice) " +
-           "AND (:isVegetarianFriendly IS NULL OR r.isVegetarianFriendly = :isVegetarianFriendly) " +
-           "AND (:isSmokerFriendly IS NULL OR r.isSmokerFriendly = :isSmokerFriendly) " +
-           "AND (:location IS NULL OR r.location = :location) " +
-           "AND (:cuisineType IS NULL OR r.cuisineType = :cuisineType) " +
-           "AND (:minAvgRating IS NULL OR (SELECT AVG(re.rating) FROM r.reviews re) >= :minAvgRating) " +
-           "GROUP BY r.id " +
-           "ORDER BY AVG((SELECT re.rating FROM r.reviews re)) DESC")
-    List<Restaurant> findFilteredRestaurants(
-            Double minPrice,
-            Double maxPrice,
-            Boolean isVegetarianFriendly,
-            Boolean isSmokerFriendly,
-            String location,
-            CuisineType cuisineType,
-            Double minAvgRating
-    );
+       "LEFT JOIN r.reviews re " +
+       "WHERE (:minPrice IS NULL OR r.price >= :minPrice) " +
+       "AND (:maxPrice IS NULL OR r.price <= :maxPrice) " +
+       "AND (:isVegetarianFriendly IS NULL OR r.isVegetarianFriendly = :isVegetarianFriendly) " +
+       "AND (:isSmokerFriendly IS NULL OR r.isSmokerFriendly = :isSmokerFriendly) " +
+       "AND (:location IS NULL OR r.location = :location) " +
+       "AND (:cuisineType IS NULL OR r.cuisineType = :cuisineType) " +
+       "GROUP BY r.id " +
+       "HAVING (:minAvgRating IS NULL OR AVG(re.rating) >= :minAvgRating) " +
+       "ORDER BY AVG(re.rating) DESC")
+List<Restaurant> findFilteredRestaurants(
+        @Param("minPrice") Double minPrice,
+        @Param("maxPrice") Double maxPrice,
+        @Param("isVegetarianFriendly") Boolean isVegetarianFriendly,
+        @Param("isSmokerFriendly") Boolean isSmokerFriendly,
+        @Param("location") String location,
+        @Param("cuisineType") CuisineType cuisineType,
+        @Param("minAvgRating") Double minAvgRating);
 
     List<Restaurant> findByNameContainingIgnoreCase(String name);
     
