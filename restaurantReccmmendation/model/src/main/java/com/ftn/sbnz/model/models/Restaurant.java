@@ -1,18 +1,41 @@
 package com.ftn.sbnz.model.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Restaurants")
 public class Restaurant {
-    
-    private long id;
-    private CuisineType cuisineType;
-    private String location;
-    private double price;
-    private String openingHour;
-    private String closingHour;
-    private ArrayList<Review> reviews;
 
-    public Restaurant(long id, CuisineType cuisineType, String location, double price, String openingHour, String closingHour) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column
+    private CuisineType cuisineType;
+    @Column
+    private String location;
+    @Column
+    private double price;
+    @Column
+    private String openingHour;
+    @Column
+    private String closingHour;
+    @Column
+    private boolean isVegetarianFriendly;
+    @Column
+    private boolean isSmokerFriendly;
+    @OneToMany
+    private List<Review> reviews;
+
+    public Restaurant(long id, CuisineType cuisineType, String location, double price, String openingHour, String closingHour, boolean isVegetarianFriendly, boolean isSmokerFriendly) {
         this.id = id;
         this.cuisineType = cuisineType;
         this.location = location;
@@ -20,6 +43,8 @@ public class Restaurant {
         this.openingHour = openingHour;
         this.closingHour = closingHour;
         this.reviews = new ArrayList<>();
+        this.isSmokerFriendly = isSmokerFriendly;
+        this.isVegetarianFriendly = isVegetarianFriendly;
     }
 
     public void addReview(Review review) {
@@ -51,8 +76,16 @@ public class Restaurant {
         return closingHour;
     }
 
-    public ArrayList<Review> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
+    }
+
+    public boolean isSmokerFriendly() {
+        return isSmokerFriendly;
+    }
+
+    public boolean isVegetarianFriendly() {
+        return isVegetarianFriendly;
     }
 
     // Setters
@@ -82,5 +115,13 @@ public class Restaurant {
 
     public void setReviews(ArrayList<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public void setSmokerFriendly(boolean isSmokerFriendly) {
+        this.isSmokerFriendly = isSmokerFriendly;
+    }
+
+    public void setVegetarianFriendly(boolean isVegetarianFriendly) {
+        this.isVegetarianFriendly = isVegetarianFriendly;
     }
 }

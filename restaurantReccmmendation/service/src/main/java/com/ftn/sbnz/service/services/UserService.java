@@ -8,6 +8,7 @@ import com.ftn.sbnz.service.services.interfaces.IUserService;
 
 @Service
 public class UserService implements IUserService{
+    
     private UserRepository userRepository;
 
     @Autowired
