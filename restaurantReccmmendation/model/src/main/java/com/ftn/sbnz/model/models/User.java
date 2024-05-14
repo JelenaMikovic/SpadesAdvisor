@@ -1,17 +1,38 @@
 package com.ftn.sbnz.model.models;
 
-import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "Users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column
     private String firstName;
+    @Column
     private String lastName;
+    @Column
     private String phoneNumber;
+    @Column
     private String email;
+    @Column
     private String password;
+    @Column
     private boolean isAdmin;
-    private ArrayList<Restaurant> favoriteRestaurants;
-    private ArrayList<Restaurant> recommendedRestaurants;
+    @ManyToMany
+    private List<Restaurant> favoriteRestaurants;
+    @ManyToMany
+    private List<Restaurant> recommendedRestaurants;
 
     public User(long id, String firstName, String lastName, String phoneNumber, String email, String password, boolean isAdmin) {
         this.id = id;
@@ -23,6 +44,10 @@ public class User {
         this.isAdmin = isAdmin;
         this.favoriteRestaurants = new ArrayList<>();
         this.recommendedRestaurants = new ArrayList<>();
+    }
+
+    public User() {
+        //TODO Auto-generated constructor stub
     }
 
     public void addFavoriteRestaurant(Restaurant restaurant) {
@@ -62,11 +87,11 @@ public class User {
         return isAdmin;
     }
 
-    public ArrayList<Restaurant> getFavoriteRestaurants() {
+    public List<Restaurant> getFavoriteRestaurants() {
         return favoriteRestaurants;
     }
 
-    public ArrayList<Restaurant> getRecommendedRestaurants() {
+    public List<Restaurant> getRecommendedRestaurants() {
         return recommendedRestaurants;
     }
 
