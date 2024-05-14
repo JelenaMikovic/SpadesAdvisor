@@ -62,9 +62,14 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
   - Ako korisnik je na odredjenoj lokaciji, preporuke na osnovu te lokacije.
   - Ako je korisnik pusac, preporuke restorana koji dozvoljavaju pusenje.
   - Ako je korisnik vegitarijanac, preporuke restorana koji imaju vegatarijanska jela.
+
+<h4>Filter: </h4>
   - Ako korisnik zeli odredjenu vrstu hrane, preporuke te vrste hrane.
   - Ako korisnik zeli do odredjene cene, preporuke restorana te cene.
   - Ako korisnik zeli od odredjene srednje ocene, preporuke restorana minimum te ocene.
+  - Ako korisnik zeli odredjenu lokaciju, preporuke na osnovu te lokacije.
+  - Ako korisnik zeli mesto za pusace, preporuke restorana koji dozvoljavaju pusenje.
+  - Ako korisnik zeli mesto za vegetarijance, preporuke restorana koji imaju vegatarijanska jela.
 
 <h4>Forward chaining: </h4>
 
