@@ -19,6 +19,8 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
+    private String name;
+    @Column
     private CuisineType cuisineType;
     @Column
     private String location;
@@ -56,6 +58,10 @@ public class Restaurant {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public CuisineType getCuisineType() {
         return cuisineType;
     }
@@ -91,6 +97,10 @@ public class Restaurant {
     // Setters
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setCuisineType(CuisineType cuisineType) {
