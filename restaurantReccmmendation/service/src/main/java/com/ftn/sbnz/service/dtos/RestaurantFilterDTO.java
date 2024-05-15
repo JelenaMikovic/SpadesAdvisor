@@ -21,11 +21,11 @@ public class RestaurantFilterDTO {
         return maxPrice;
     }
 
-    public Boolean getVegetarianFriendly() {
+    public Boolean getIsVegetarianFriendly() {
         return isVegetarianFriendly;
     }
 
-    public Boolean getSmokerFriendly() {
+    public Boolean getIsSmokerFriendly() {
         return isSmokerFriendly;
     }
 

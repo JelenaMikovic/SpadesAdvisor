@@ -31,6 +31,11 @@ public class RestaurantController {
         return restaurantService.getFilteredRestaurants(filterDTO);
     }
 
+	@GetMapping("/recommended")
+    public List<Restaurant> getRecommendedRestaurants(@RequestBody RestaurantFilterDTO filterDTO) {
+        return restaurantService.getRecommendedRestaurants(filterDTO);
+    }
+
 	@GetMapping("/search")
     public List<Restaurant> searchRestaurantsByName(@RequestParam String name) {
         return restaurantService.searchRestaurantsByName(name);

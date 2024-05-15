@@ -10,5 +10,7 @@ public interface IRestaurantService {
     List<Restaurant> getFilteredRestaurants(RestaurantFilterDTO filterDTO);
 
     List<Restaurant> searchRestaurantsByName(String name);
+
+    List<Restaurant> getRecommendedRestaurants(RestaurantFilterDTO filterDTO);
     
 }

@@ -31,9 +31,9 @@ public class Restaurant {
     @Column
     private String closingHour;
     @Column
-    private boolean isVegetarianFriendly;
+    private Boolean isVegetarianFriendly;
     @Column
-    private boolean isSmokerFriendly;
+    private Boolean isSmokerFriendly;
     @OneToMany
     private List<Review> reviews;
 
@@ -41,7 +41,7 @@ public class Restaurant {
         
     }
 
-    public Restaurant(long id, CuisineType cuisineType, String location, double price, String openingHour, String closingHour, boolean isVegetarianFriendly, boolean isSmokerFriendly) {
+    public Restaurant(long id, CuisineType cuisineType, String location, double price, String openingHour, String closingHour, Boolean isVegetarianFriendly, Boolean isSmokerFriendly) {
         this.id = id;
         this.cuisineType = cuisineType;
         this.location = location;
@@ -90,11 +90,11 @@ public class Restaurant {
         return reviews;
     }
 
-    public boolean isSmokerFriendly() {
+    public Boolean getIsSmokerFriendly() {
         return isSmokerFriendly;
     }
 
-    public boolean isVegetarianFriendly() {
+    public Boolean getIsVegetarianFriendly() {
         return isVegetarianFriendly;
     }
 
@@ -131,11 +131,11 @@ public class Restaurant {
         this.reviews = reviews;
     }
 
-    public void setSmokerFriendly(boolean isSmokerFriendly) {
+    public void setSmokerFriendly(Boolean isSmokerFriendly) {
         this.isSmokerFriendly = isSmokerFriendly;
     }
 
-    public void setVegetarianFriendly(boolean isVegetarianFriendly) {
+    public void setVegetarianFriendly(Boolean isVegetarianFriendly) {
         this.isVegetarianFriendly = isVegetarianFriendly;
     }
 }
