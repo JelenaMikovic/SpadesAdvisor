@@ -61,4 +61,27 @@ public class CEPConfigTest {
 
         assertEquals(0, recommendedRestaurants.size());
     }
+
+    @Test
+    public void testFwd1() {
+
+        KieServices ks = KieServices.Factory.get();
+        KieContainer kContainer = ks.getKieClasspathContainer();
+        KieSession ksession = kContainer.newKieSession("fwKsession");
+
+        User user = new User();
+
+        Restaurant visit1 = new Restaurant(1, CuisineType.ITALIAN, "Location 1", 20.0, "12:00", "22:00", true, false);
+        Restaurant visit2 = new Restaurant(2, CuisineType.CHINESE, "Location 2", 25.0, "11:30", "21:30", false, true);
+        Review review1 = new Review(1, user, visit1, 4);
+        Review review2 = new Review(2, user, visit2, 5);
+
+        ksession.insert(review1);
+        ksession.insert(review2);
+
+        ksession.insert(new Restaurant(3, CuisineType.ITALIAN, "Location 3", 30.0, "11:00", "23:00", true, true));
+
+        ksession.fireAllRules();
+        assertEquals(0, user.getRecommendedRestaurants().size());
+    }
 }

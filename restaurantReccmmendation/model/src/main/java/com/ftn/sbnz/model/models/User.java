@@ -33,6 +33,10 @@ public class User {
     private List<Restaurant> favoriteRestaurants;
     @ManyToMany
     private List<Restaurant> recommendedRestaurants;
+    @ManyToMany
+    private List<CuisineType> preferredCuisineType;
+    @ManyToMany
+    private List<Restaurant> highlyRatedRestaurants;
 
     public User(long id, String firstName, String lastName, String phoneNumber, String email, String password, boolean isAdmin) {
         this.id = id;
@@ -44,11 +48,15 @@ public class User {
         this.isAdmin = isAdmin;
         this.favoriteRestaurants = new ArrayList<>();
         this.recommendedRestaurants = new ArrayList<>();
+        this.preferredCuisineType = new ArrayList<>();
+        this.highlyRatedRestaurants = new ArrayList<>();
     }
 
     public User() {
         this.favoriteRestaurants = new ArrayList<>();
         this.recommendedRestaurants = new ArrayList<>();
+        this.preferredCuisineType = new ArrayList<>();
+        this.highlyRatedRestaurants = new ArrayList<>();
     }
 
     public void addFavoriteRestaurant(Restaurant restaurant) {
@@ -62,7 +70,6 @@ public class User {
         recommendedRestaurants.add(restaurant);
     }
 
-    // Getters
     public long getId() {
         return id;
     }
@@ -99,7 +106,6 @@ public class User {
         return recommendedRestaurants;
     }
 
-    // Setters
     public void setId(long id) {
         this.id = id;
     }
@@ -134,6 +140,36 @@ public class User {
 
     public void setRecommendedRestaurants(ArrayList<Restaurant> recommendedRestaurants) {
         this.recommendedRestaurants = recommendedRestaurants;
+    }
+
+    public List<CuisineType> getPreferredCuisineType() {
+        return preferredCuisineType;
+    }
+
+    public void setPreferredCuisineType(List<CuisineType> preferredCuisineType) {
+        this.preferredCuisineType = preferredCuisineType;
+    }
+
+    public void addPreferredCuisineType(CuisineType cuisineType) {
+        if (preferredCuisineType == null) {
+            preferredCuisineType = new ArrayList<>();
+        }
+        preferredCuisineType.add(cuisineType);
+    }
+
+    public List<Restaurant> getHighlyRatedRestaurants() {
+        return highlyRatedRestaurants;
+    }
+
+    public void setHighlyRatedRestaurants(List<Restaurant> highlyRatedRestaurants) {
+        this.highlyRatedRestaurants = highlyRatedRestaurants;
+    }
+
+    public void addHighlyRatedRestaurant(Restaurant restaurant) {
+        if (this.highlyRatedRestaurants == null) {
+            this.highlyRatedRestaurants = new ArrayList<>();
+        }
+        this.highlyRatedRestaurants.add(restaurant);
     }
 
 }

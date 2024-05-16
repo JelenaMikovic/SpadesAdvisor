@@ -1,2 +1,77 @@
 package forward;
 
+import com.ftn.sbnz.model.models.Restaurant
+import com.ftn.sbnz.model.models.Review
+import com.ftn.sbnz.model.models.User
+import com.ftn.sbnz.model.models.CuisineType
+
+
+// ----------------- 1 fwd --------------------------
+rule "Highly rated restaurant"
+when
+    $user: User()
+    $review: Review(user == $user, rating > 4)
+    $restaurant: Restaurant(id == $review.restaurant.id)
+then
+    $user.addHighlyRatedRestaurant($restaurant);
+    update($user);
+end
+
+rule "Add preferred cuisine type"
+when
+    $user: User()
+    $review: Review(user == $user, rating > 4, $restaurant: restaurant)
+then
+    CuisineType type = $restaurant.getCuisineType();
+    $user.addPreferredCuisineType(type);
+    update($user);
+end
+
+rule "Recommend restaurant based on cuisine type"
+when
+    $user: User($preferredType: preferredCuisineType)
+    not(Restaurant(cuisineType memberOf $preferredType))
+    $restaurant: Restaurant()
+then
+    $user.addRecommendedRestaurant($restaurant);
+    update($user);
+end
+
+// --------------------------------------------------
+
+// ----------------- 3 fwd --------------------------
+rule "Positive review on location"
+when
+    $user: User()
+    $review: Review(user == $user, rating >= 4)
+    $restaurant: Restaurant(id == $review.getRestaurant().getId(), location != null)
+then
+    //$user.addFavoriteLocation($restaurant.getLocation());
+    //update($user);
+    $user.addHighlyRatedRestaurant($restaurant);
+    update($user);
+end
+
+rule "Add preferred location"
+when
+    $user: User()
+    exists(Review(user == $user, rating >= 4, $restaurant: restaurant))
+then
+    String[] locationParts = $restaurant.getLocation().split(",");
+    if (locationParts.length >= 2) {
+        $user.addPreferredLocation(locationParts[1].trim());
+        update($user);
+    }
+    update($user);
+end
+
+rule "Recommend restaurant based on location"
+when
+    $user: User($preferredLocations: preferredLocations)
+    not(Restaurant(location memberOf $preferredLocations))
+    $restaurant: Restaurant()
+then
+    $user.addRecommendedRestaurant($restaurant);
+    update($user);
+end
+// --------------------------------------------------
