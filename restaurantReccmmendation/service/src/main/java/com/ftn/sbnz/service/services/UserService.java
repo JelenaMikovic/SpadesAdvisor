@@ -41,4 +41,6 @@ public class UserService implements IUserService{
     public User authenticateUser(String email, String password) {
         return userRepository.findByEmailAndPassword(email, password);
     }
+
+
 }
