@@ -47,7 +47,8 @@ public class User {
     }
 
     public User() {
-        //TODO Auto-generated constructor stub
+        this.favoriteRestaurants = new ArrayList<>();
+        this.recommendedRestaurants = new ArrayList<>();
     }
 
     public void addFavoriteRestaurant(Restaurant restaurant) {
@@ -56,6 +57,9 @@ public class User {
 
     public void removeFavoriteRestaurant(Restaurant restaurant) {
         favoriteRestaurants.remove(restaurant);
+    }
+    public void addRecommendedRestaurant(Restaurant restaurant) {
+        recommendedRestaurants.add(restaurant);
     }
 
     // Getters

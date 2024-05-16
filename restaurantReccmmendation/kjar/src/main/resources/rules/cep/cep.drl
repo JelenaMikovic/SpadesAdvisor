@@ -1,54 +1,39 @@
 package cep;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.List;
 
-rule "Recommend restaurant based on recent visits and preferred cuisine"
-when
-    $user: User()
-    accumulate(
-        Review(
-            $restaurant: restaurant,
-            user == $user,
-            $rating: rating
-        ) over window:time(7d),
-        $count : count($restaurant);
-        $count >= 2
-    )
-    $recentVisits: ArrayList() from collect(
-        Review(
-            $restaurant: restaurant,
-            user == $user
-        ) over window:time(7d)
-    )
-    $preferredCuisine: CuisineType() from $recentVisits.get(0).restaurant.getCuisineType()
-then
-    ArrayList<Restaurant> recommendedRestaurants = new ArrayList<>();
-    for (Object review : $recentVisits) {
-        Restaurant visitedRestaurant = ((Review) review).getRestaurant();
-        CuisineType preferredCuisine = visitedRestaurant.getCuisineType();
-        for (Restaurant restaurant : RestaurantList.getAllRestaurants()) {
-            if (restaurant.getCuisineType().equals(preferredCuisine) && !visitedRestaurant.equals(restaurant)) {
-                recommendedRestaurants.add(restaurant);
-            }
-        }
-    }
+import com.ftn.sbnz.model.models.Restaurant;
+import com.ftn.sbnz.model.models.User;
+import com.ftn.sbnz.model.models.Review;
+import com.ftn.sbnz.model.models.CuisineType;
 
-    Collections.sort(recommendedRestaurants, new Comparator<Restaurant>() {
-        @Override
-        public int compare(Restaurant r1, Restaurant r2) {
-            return Integer.compare(getReviewCount(r2), getReviewCount(r1));
-        }
+global List<Restaurant> allRestaurants;
+global List<Restaurant> recommendations;
 
-        private int getReviewCount(Restaurant restaurant) {
-            return restaurant.getReviews().size();
-        }
-    });
+declare Review
+    @role(event)
+end
 
-    if (recommendedRestaurants.size() > 10) {
-        recommendedRestaurants.subList(10, recommendedRestaurants.size()).clear();
-    }
-
-    $user.setRecommendedRestaurants(recommendedRestaurants);
+rule "Recommend restaurants based on recent visits"
+    when
+        $user: User ()
+        $reviews : List() from collect(
+            Review(this.user == $user) over window:time(7d)
+        )
+        Number(intValue >= 2) from accumulate(
+            Review(this.user == $user) over window:time(7d), count()
+        )
+       $preferredCuisine : List() from accumulate(
+            $review : Review(this.user == $user) over window:time(7d),
+            init(List<CuisineType> cuisineTypes = new ArrayList();),
+            action(cuisineTypes.add($review.getRestaurant().getCuisineType());),
+            result(cuisineTypes)
+        )
+        $recommendedRestaurants : List() from collect(
+            Restaurant(cuisineType memberOf $preferredCuisine) from allRestaurants
+        )
+    then
+        recommendations.add($recommendedRestaurants);
+        insert($recommendedRestaurants);
 end
