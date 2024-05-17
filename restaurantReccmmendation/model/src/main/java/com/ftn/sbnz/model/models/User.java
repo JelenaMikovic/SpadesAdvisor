@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.drools.compiler.lang.DRL6Expressions.shiftExpression_return;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +35,8 @@ public class User {
     private List<Restaurant> favoriteRestaurants;
     @ManyToMany
     private List<Restaurant> recommendedRestaurants;
-    @ManyToMany
-    private List<CuisineType> preferredCuisineType;
+    //@Column
+    //private List<CuisineType> preferredCuisineType;
     @ManyToMany
     private List<Restaurant> highlyRatedRestaurants;
 
@@ -48,14 +50,14 @@ public class User {
         this.isAdmin = isAdmin;
         this.favoriteRestaurants = new ArrayList<>();
         this.recommendedRestaurants = new ArrayList<>();
-        this.preferredCuisineType = new ArrayList<>();
+        //this.preferredCuisineType = new ArrayList<>();
         this.highlyRatedRestaurants = new ArrayList<>();
     }
 
     public User() {
         this.favoriteRestaurants = new ArrayList<>();
         this.recommendedRestaurants = new ArrayList<>();
-        this.preferredCuisineType = new ArrayList<>();
+        //this.preferredCuisineType = new ArrayList<>();
         this.highlyRatedRestaurants = new ArrayList<>();
     }
 
@@ -142,7 +144,7 @@ public class User {
         this.recommendedRestaurants = recommendedRestaurants;
     }
 
-    public List<CuisineType> getPreferredCuisineType() {
+    /*public List<CuisineType> getPreferredCuisineType() {
         return preferredCuisineType;
     }
 
@@ -156,7 +158,7 @@ public class User {
         }
         preferredCuisineType.add(cuisineType);
     }
-
+    */
     public List<Restaurant> getHighlyRatedRestaurants() {
         return highlyRatedRestaurants;
     }

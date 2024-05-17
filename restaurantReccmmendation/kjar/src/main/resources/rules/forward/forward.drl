@@ -39,6 +39,42 @@ end
 
 // --------------------------------------------------
 
+
+// ----------------- 2 fwd --------------------------------
+rule "Highly rated restaurant in price range"
+when
+    $user: User()
+    $review: Review(user == $user, rating > 4)
+    $restaurant: Restaurant(id == $review.restaurant.id, $priceRange: priceRange)
+    PriceRange($priceRange == $user.preferredPriceRange)
+then
+    $user.addHighlyRatedRestaurantInPriceRange($restaurant);
+    update($user);
+end
+
+rule "Add preferred price range"
+when
+    $user: User()
+    $review: Review(user == $user, rating > 4, $restaurant: restaurant)
+then
+    PriceRange range = $restaurant.getPriceRange();
+    $user.addPreferredPriceRange(range);
+    update($user);
+end
+
+rule "Recommend restaurant based on price range"
+when
+    $user: User($preferredRange: preferredPriceRange)
+    not(Restaurant(priceRange memberOf $preferredRange))
+    $restaurant: Restaurant(priceRange memberOf $preferredRange)
+then
+    $user.addRecommendedRestaurant($restaurant);
+    update($user);
+end
+// ---------------------------------------------------------
+
+
+
 // ----------------- 3 fwd --------------------------
 rule "Positive review on location"
 when
@@ -75,3 +111,6 @@ then
     update($user);
 end
 // --------------------------------------------------
+
+
+// ---------------------- 4 fwd ------------------------s

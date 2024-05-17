@@ -34,3 +34,31 @@ then
     recommendations.add($restaurant);
     insert($restaurant);
 end
+
+
+rule "Recommend restaurants based on rating"
+when 
+    $filter: RestaurantFilterDTO(minAvgRating != null, $minAvgRating : minAvgRating)
+    $restaurant: Restaurant(minAvgRating > $minAvgRating)
+then
+    recommendations.add($restaurant);
+    insert($restaurant);
+end
+
+rule "Recommend restaurants based on cuisine type"
+when 
+    $filter: RestaurantFilterDTO(cuisineType != null, $cuisineType : cuisineType)
+    $restaurant: Restaurant(cuisineType == $cuisineType)
+then
+    recommendations.add($restaurant);
+    insert($restaurant);
+end
+
+rule "Recommend restaurants based on price range"
+when
+    $filter: RestaurantFilterDTO(minPrice != null, $minPrice : minPrice, maxPrice != null, $maxPrice : maxPrice)
+    $restaurant: Restaurant(price >= $minPrice, price <= $maxPrice)
+then
+    recommendations.add($restaurant);
+    insert($restaurant);
+end
