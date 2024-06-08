@@ -1,0 +1,36 @@
+<mat-toolbar>
+ 
+    <!-- Home Link -->
+    <button mat-button routerLink="/" aria-label="Home">
+        <mat-icon>home</mat-icon>
+    </button>
+    
+  
+    <!-- Profile Button -->
+    <button mat-icon-button aria-label="Profile">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+    <span class="spacer"></span>
+  
+  
+    <!-- Search Field -->
+    <mat-form-field appearance="outline" class="example-form-field">
+      <mat-label>Search</mat-label>
+      <input matInput type="search" aria-label="Search">
+      <button mat-icon-button matSuffix aria-label="Search">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  
+    <!-- Filter Button -->
+    <button mat-icon-button aria-label="Filter" (click)="openFilterDialog()">
+      <mat-icon>filter_list</mat-icon>
+    </button>
+
+    <!-- Logout Button -->
+    <button mat-button routerLink="/login" aria-label="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+  

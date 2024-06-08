@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Filter Options</h2>
+<mat-dialog-content>
+  <form>
+    <mat-checkbox>Smoker Friendly</mat-checkbox>
+    <mat-checkbox>Vegetarian Friendly</mat-checkbox>
+    <mat-form-field appearance="fill">
+        <mat-label>Location</mat-label>
+        <input matInput placeholder="Enter a location">
+    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Type of Food</mat-label>
+        <mat-select placeholder="Select">
+          <mat-option value="italian">Italian</mat-option>
+          <mat-option value="chinese">Chinese</mat-option>
+          <mat-option value="mexican">Mexican</mat-option>
+          <mat-option value="american">American</mat-option>
+          <mat-option value="french">French</mat-option>
+          <mat-option value="japanese">Japanese</mat-option>
+          <mat-option value="indian">Indian</mat-option>
+          <mat-option value="thai">Thai</mat-option>
+          <mat-option value="greek">Greek</mat-option>
+          <mat-option value="serbian">Serbian</mat-option>
+          <mat-option value="other">Other</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Price</mat-label>
+        <input matInput placeholder="Enter maximum price">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Minimum Rating</mat-label>
+        <input matInput placeholder="Enter minimum rating">
+      </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button color="primary" mat-dialog-close>Apply</button>
+</mat-dialog-actions>

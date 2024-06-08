@@ -22,8 +22,6 @@ public class User {
     @Column
     private String lastName;
     @Column
-    private String phoneNumber;
-    @Column
     private String email;
     @Column
     private String password;
@@ -34,11 +32,10 @@ public class User {
     @ManyToMany
     private List<Restaurant> recommendedRestaurants;
 
-    public User(long id, String firstName, String lastName, String phoneNumber, String email, String password, boolean isAdmin) {
+    public User(long id, String firstName, String lastName, String email, String password, boolean isAdmin) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
         this.isAdmin = isAdmin;
@@ -69,10 +66,6 @@ public class User {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
     }
 
     public String getEmail() {
@@ -106,10 +99,6 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public void setEmail(String email) {
