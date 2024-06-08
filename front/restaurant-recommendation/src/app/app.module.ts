@@ -19,6 +19,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+
 
 @NgModule({
   declarations: [
@@ -44,6 +46,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     MatSliderModule,
     MatDialogModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
