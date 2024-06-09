@@ -21,6 +21,7 @@ import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
+import { FilteredRestaurantsComponent } from './filtered-restaurants/filtered-restaurants.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { HttpClientModule } from '@angular/common/http';
     HomePageComponent,
     RegistrationComponent,
     NavbarComponent,
-    FilterDialogComponent
+    FilterDialogComponent,
+    FilteredRestaurantsComponent
   ],
   imports: [
     BrowserModule,

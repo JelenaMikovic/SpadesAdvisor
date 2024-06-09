@@ -33,14 +33,9 @@ public class RestaurantController {
 		this.restaurantService = restaurantService;
 	}
 
-	@GetMapping("/filtered")
+	@PostMapping("/filtered")
     public List<Restaurant> getFilteredRestaurants(@RequestBody RestaurantFilterDTO filterDTO) {
         return restaurantService.getFilteredRestaurants(filterDTO);
-    }
-
-	@GetMapping("/recommended")
-    public List<Restaurant> getRecommendedRestaurants(@RequestBody RestaurantFilterDTO filterDTO) {
-        return restaurantService.getRecommendedRestaurants(filterDTO);
     }
 
 	@GetMapping("/search")

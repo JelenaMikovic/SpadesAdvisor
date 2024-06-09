@@ -10,8 +10,8 @@ global List<Restaurant> recommendations;
 
 rule "Recommend restaurants based on user's location"
 when 
-    $filter: RestaurantFilterDTO(location != null, $location : location)
-    $restaurant: Restaurant(location.contains($location))
+    $filter: RestaurantFilterDTO(location != null, $location : location.toLowerCase())
+    $restaurant: Restaurant(location.toLowerCase().contains($location))
 then
     recommendations.add($restaurant);
     insert($restaurant);

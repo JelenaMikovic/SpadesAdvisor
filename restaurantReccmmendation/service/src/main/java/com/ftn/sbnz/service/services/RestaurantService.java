@@ -32,30 +32,14 @@ public class RestaurantService implements IRestaurantService{
         this.userRepository = userRepository;
     }
 
-    @Override
-    public List<Restaurant> getFilteredRestaurants(RestaurantFilterDTO filterDTO) {
-        if (filterDTO == null) {
-            return restaurantRepository.findAll();
-        } else {
-            return restaurantRepository.findFilteredRestaurants(
-                    filterDTO.getMinPrice(),
-                    filterDTO.getMaxPrice(),
-                    filterDTO.getIsVegetarianFriendly(),
-                    filterDTO.getIsSmokerFriendly(),
-                    filterDTO.getLocation(),
-                    filterDTO.getCuisineType(),
-                    filterDTO.getMinAvgRating());
-        }
-    }
-
     @Override 
-    public List<Restaurant> getRecommendedRestaurants(RestaurantFilterDTO filterDTO) {
+    public List<Restaurant> getFilteredRestaurants(RestaurantFilterDTO filterDTO) {
         
         List<Restaurant> recommendations = new ArrayList<>();
         
         KieSession kieSession = kieContainer.newKieSession("basicKsession");
 
-        System.out.println(kieSession);
+        System.out.println(filterDTO.getCuisineType());
         kieSession.setGlobal("recommendations", recommendations);
         kieSession.insert(filterDTO);
 

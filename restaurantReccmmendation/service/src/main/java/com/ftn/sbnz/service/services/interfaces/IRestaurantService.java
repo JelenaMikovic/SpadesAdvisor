@@ -13,8 +13,6 @@ public interface IRestaurantService {
 
     List<Restaurant> searchRestaurantsByName(String name);
 
-    List<Restaurant> getRecommendedRestaurants(RestaurantFilterDTO filterDTO);
-
     Boolean addFavoriteRestaurant(Long restaurantId, Long userId);
 
     Boolean addRestaurant(RestaurantDTO restaurantDTO);
