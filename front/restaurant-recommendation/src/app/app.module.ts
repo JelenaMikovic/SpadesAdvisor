@@ -22,6 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
 import { FilteredRestaurantsComponent } from './filtered-restaurants/filtered-restaurants.component';
+import { SearchedRestaurantsComponent } from './searched-restaurants/searched-restaurants.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { FilteredRestaurantsComponent } from './filtered-restaurants/filtered-re
     RegistrationComponent,
     NavbarComponent,
     FilterDialogComponent,
-    FilteredRestaurantsComponent
+    FilteredRestaurantsComponent,
+    SearchedRestaurantsComponent
   ],
   imports: [
     BrowserModule,

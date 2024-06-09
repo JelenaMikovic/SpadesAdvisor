@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  searchQuery: string = '';
   
   constructor(public dialog: MatDialog, private http: HttpClient, private router: Router) {}
 
@@ -22,12 +23,12 @@ export class NavbarComponent {
   logout() {
     this.http.post('http://localhost:8080/api/users/logout', {}, {
       withCredentials: true,
-      responseType: 'text' // Explicitly set the response type to text
+      responseType: 'text' 
     }).subscribe(
       response => {
         console.log(response);
         alert('Logout successful');
-        this.router.navigate(['/login']); // Redirect to login or another route
+        this.router.navigate(['/login']); 
       },
       error => {
         console.error(error);
@@ -35,5 +36,8 @@ export class NavbarComponent {
       }
     );
   }
-  
+
+  search() {
+    this.router.navigate(['/searched-restaurants'], { queryParams: { name: this.searchQuery } });
+  }
 }
