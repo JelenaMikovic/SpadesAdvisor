@@ -5,7 +5,10 @@
     <kbase name="cepKbase" eventProcessingMode="stream" packages="cep">
         <ksession name="cepKsession" clockType="pseudo"/>
     </kbase>
-        <kbase name="basic" packages="basic">
+    <kbase name="basic" packages="basic">
         <ksession name="basicKsession"/>
+    </kbase>
+    <kbase name="query" packages="query">
+        <ksession name="queryKsession"/>
     </kbase>
 </kmodule>

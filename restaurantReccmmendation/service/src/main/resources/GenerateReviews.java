@@ -17,7 +17,7 @@ public class GenerateReviews {
                     user_id = (int) (Math.floor(Math.random() * 20) + 4);
                     int rating = (int) (Math.floor(Math.random() * 5) + 1);
 
-                    stmt.executeUpdate("INSERT INTO reviews (user_id, rating) VALUES (" + user_id + ", " + rating + ")");
+                    stmt.executeUpdate("INSERT INTO reviews (user_id, rating, restaurant_id) VALUES (" + user_id + ", " + rating + ", " + restaurant_id + ")");
                     stmt.executeUpdate("INSERT INTO restaurants_reviews (restaurant_id, reviews_id) VALUES (" + restaurant_id + ", " + review_id + ")");
 
                     review_count--;

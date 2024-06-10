@@ -1,0 +1,58 @@
+package query;
+
+import com.ftn.sbnz.model.models.User;
+import com.ftn.sbnz.model.models.Review;
+import com.ftn.sbnz.model.models.Restaurant;
+import com.ftn.sbnz.model.models.CuisineType;
+import java.util.HashMap;
+import java.util.ArrayList;
+
+/*
+query mostVisitedCuisineTypes(Long userId)
+    $user : User( id == userId )
+    $reviews : ArrayList() from collect(Review(user.id == userId))
+    $cuisineMap : HashMap() from makeCuisineTypeMap($reviews)
+    $maxCount : Number() from accumulate(
+        HashMap.Entry(String.class, Integer.class) from $cuisineMap.entrySet(),
+        init( int max = 0; ),
+        action( if(value > max) max = value; ),
+        result( max )
+    )
+    $favoriteCuisineTypes : ArrayList() from accumulate(
+        HashMap.Entry(String.class, Integer.class) from $cuisineMap.entrySet(),
+        init( ArrayList<String> list = new ArrayList<>(); ),
+        action( if(value == $maxCount) list.add(key); ),
+        result( list )
+    )
+end
+
+function HashMap makeCuisineTypeMap(ArrayList list) {
+    HashMap<String, Integer> map = new HashMap<>();
+    for (Object o : list) {
+        Review review = (Review) o;
+        Restaurant restaurant = review.getRestaurant();
+        CuisineType cuisineType = restaurant.getCuisineType();
+        String cuisineTypeName = cuisineType.toString();
+        Integer count = map.getOrDefault(cuisineTypeName, 0);
+        map.put(cuisineTypeName, count + 1);
+    }
+    return map;
+}
+*/
+query usersFavouriteRestaurants(long userId)
+    $user : User( id == userId )
+    $reviews : ArrayList() from collect(Review(user.getId() == userId, rating == 5))
+    $map : HashMap() from makeMapRestaurants($reviews)
+end
+
+function HashMap makeMapRestaurants(ArrayList list) {
+    HashMap<String, Integer> map = new HashMap<>();
+    for (Object o : list) {
+        Review review = (Review) o;
+        Restaurant restaurant = review.getRestaurant();
+        String key = restaurant.getName();
+        Integer count = map.getOrDefault(key, 0);
+        map.put(key, count + 1);
+    }
+    return map;
+}
