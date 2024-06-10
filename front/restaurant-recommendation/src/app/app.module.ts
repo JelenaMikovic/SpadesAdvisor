@@ -20,9 +20,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
 import { HttpClientModule } from '@angular/common/http';
 import { FilteredRestaurantsComponent } from './filtered-restaurants/filtered-restaurants.component';
 import { SearchedRestaurantsComponent } from './searched-restaurants/searched-restaurants.component';
+import { ReportsComponent } from './reports/reports.component';
 
 
 @NgModule({
@@ -34,7 +36,8 @@ import { SearchedRestaurantsComponent } from './searched-restaurants/searched-re
     NavbarComponent,
     FilterDialogComponent,
     FilteredRestaurantsComponent,
-    SearchedRestaurantsComponent
+    SearchedRestaurantsComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +55,8 @@ import { SearchedRestaurantsComponent } from './searched-restaurants/searched-re
     MatSelectModule,
     MatSliderModule,
     MatDialogModule,
-    MatCardModule
+    MatCardModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

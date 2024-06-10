@@ -19,7 +19,7 @@ export class LoginComponent {
       password: this.password
     };
 
-    this.http.post('http://localhost:8080/api/users/login', loginData, { responseType: 'text' }).subscribe(
+    this.http.post('http://localhost:8080/api/users/login', loginData, { responseType: 'text', withCredentials: true}).subscribe(
       response => {
         console.log(response);
         alert('Login successful');
