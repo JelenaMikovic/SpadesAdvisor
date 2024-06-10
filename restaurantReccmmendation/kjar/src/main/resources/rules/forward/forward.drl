@@ -1,2 +1,96 @@
 package forward;
 
+import com.ftn.sbnz.model.models.User;
+import com.ftn.sbnz.model.models.Review;
+import com.ftn.sbnz.model.models.Restaurant;
+import com.ftn.sbnz.model.models.CuisineType;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+global List<Restaurant> recommendedRestaurants;
+
+rule "Add restaurant to positively rated list"
+when
+    $review : Review(rating == 5)
+    $user : User(this == $review.getUser())
+    $restaurant : Restaurant(this == $review.getRestaurant())
+    not (Restaurant(this == $restaurant) from $user.getPositivelyRatedRestaurants())
+then
+    $user.getPositivelyRatedRestaurants().add($restaurant);
+    update($user);
+    System.out.println("Restaurant " + $restaurant.getName() + " added to positively rated list of user " + $user.getFirstName());
+end
+
+
+rule "Add cuisine type to preferred list"
+when
+    $user : User(positivelyRatedRestaurants.size() > 0)
+    $restaurant : Restaurant(this memberOf $user.getPositivelyRatedRestaurants())
+then
+    if (!$user.getPreferredCuisines().contains($restaurant.getCuisineType())) {
+        $user.getPreferredCuisines().add($restaurant.getCuisineType());
+        update($user);
+        System.out.println("Cuisine type " + $restaurant.getCuisineType() + " added to preferred list of user " + $user.getFirstName());
+    }
+end
+
+rule "Recommend restaurant based on preferred cuisines"
+when
+    $user : User(preferredCuisines.size() > 0)
+    $restaurant : Restaurant(cuisineType memberOf $user.getPreferredCuisines(), this not memberOf $user.getPositivelyRatedRestaurants())
+then
+    recommendedRestaurants.add($restaurant);
+    System.out.println("Restaurant " + $restaurant.getName() + " recommended to user " + $user.getFirstName());
+end
+
+global Map<String, Integer> locationVisitCounts;
+
+function String getPartOfCity(String location) {
+    String[] locationParts = location.split(",");
+    String partOfCity = locationParts[1].trim();
+    return partOfCity;
+}
+
+rule "Add restaurant to visited list"
+when
+    $review : Review()
+    $user : User(this == $review.getUser())
+    $restaurant : Restaurant(this == $review.getRestaurant())
+    not (Restaurant(this == $restaurant) from $user.getVisitedRestaurants())
+then
+    $user.getVisitedRestaurants().add($restaurant);
+    update($user);
+    String location = $restaurant.getLocation();
+    String[] locationParts = location.split(",");
+    String partOfCity = locationParts[1].trim();
+    Integer count = (Integer) locationVisitCounts.getOrDefault(partOfCity, 0);
+    locationVisitCounts.put(partOfCity, count + 1);
+    System.out.println("Restaurant " + $restaurant.getName() + " added to visited list of user " + $user.getFirstName());
+end
+
+rule "Add location to preferred list"
+when
+    $user : User()
+    $restaurant : Restaurant()
+    $location : String() from getPartOfCity($restaurant.getLocation())
+    $count : Integer() from locationVisitCounts.getOrDefault($location, 0)
+    eval($count >= 3)
+    not(String(this == $location) from $user.getPreferredLocations())
+then
+    if (!$user.getPreferredLocations().contains($location)) {
+        $user.getPreferredLocations().add($location);
+        update($user);
+        System.out.println("Location " + $location + " added to preferred list of user " + $user.getFirstName());   
+    }
+end
+
+rule "Recommend restaurant based on preferred locations"
+when
+    $user : User(preferredLocations.size() > 0)
+    $restaurant : Restaurant($user.getPreferredLocations().contains(getPartOfCity($restaurant.getLocation())))
+then
+    recommendedRestaurants.add($restaurant);
+    System.out.println("Restaurant " + $restaurant.getName() + " recommended to user " + $user.getFirstName());
+end

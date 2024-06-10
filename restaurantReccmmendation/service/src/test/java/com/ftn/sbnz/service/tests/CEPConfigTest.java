@@ -1,9 +1,24 @@
 package com.ftn.sbnz.service.tests;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 // import org.kie.api.KieServices;
 // import org.kie.api.runtime.KieContainer;
 // import org.kie.api.runtime.KieSession;
+import org.kie.api.KieServices;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+
+import com.ftn.sbnz.model.models.CuisineType;
+import com.ftn.sbnz.model.models.Restaurant;
+import com.ftn.sbnz.model.models.Review;
+import com.ftn.sbnz.model.models.User;
 
 
 
@@ -11,9 +26,135 @@ public class CEPConfigTest {
 
     @Test
     public void test() {
-        // KieServices ks = KieServices.Factory.get();
-        // KieContainer kContainer = ks.getKieClasspathContainer(); 
-        // KieSession ksession = kContainer.newKieSession("cepKsession");
-      
+        // Load KieServices
+            KieServices kieServices = KieServices.Factory.get();
+
+            // Load KieContainer from classpath
+            KieContainer kieContainer = kieServices.getKieClasspathContainer();
+
+            // Create a new KieSession
+            KieSession kieSession = kieContainer.newKieSession("forwardKsession");
+
+            System.out.println("dsadasd");
+
+            // Create some Restaurant objects
+            Restaurant restaurant1 = new Restaurant();
+            restaurant1.setName("Italian Bistro");
+            restaurant1.setCuisineType(CuisineType.ITALIAN);
+
+            Restaurant restaurant2 = new Restaurant();
+            restaurant2.setName("Sushi Place");
+            restaurant2.setCuisineType(CuisineType.ITALIAN);
+
+            // Add restaurants to a list
+            List<Restaurant> allRestaurants = new ArrayList<>();
+            allRestaurants.add(restaurant1);
+            allRestaurants.add(restaurant2);
+
+            // Create a list for recommended restaurants
+            List<Restaurant> recommendedRestaurants = new ArrayList<>();
+
+            // Set the global list of recommended restaurants
+            kieSession.setGlobal("recommendedRestaurants", recommendedRestaurants);
+
+            // Create a User object
+            User user = new User();
+            user.setFirstName("John");
+
+            // Create a Review object
+            Review review = new Review();
+            review.setUser(user);
+            review.setRestaurant(restaurant1);
+            review.setRating(5);
+
+            // Insert the objects into the session
+            kieSession.insert(user);
+            kieSession.insert(restaurant1);
+            kieSession.insert(restaurant2);
+            kieSession.insert(review);
+
+            // Fire all rules
+            kieSession.fireAllRules();
+
+            // Dispose the session
+            kieSession.dispose();
+
+            // Print recommended restaurants
+            System.out.println("Recommended Restaurants:");
+            for (Restaurant restaurant : recommendedRestaurants) {
+                System.out.println(restaurant.getName());
+            }
     }
+
+    @Test
+    public void test2() {
+        // Load KieServices
+        KieServices kieServices = KieServices.Factory.get();
+
+        // Load KieContainer from classpath
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+
+        // Create a new KieSession
+        KieSession kSession = kieContainer.newKieSession("forwardKsession");
+
+        List<Restaurant> recommendedRestaurants = new ArrayList<>();
+        Map<String, Integer> locationVisitCounts = new HashMap<>();
+
+        kSession.setGlobal("recommendedRestaurants", recommendedRestaurants);
+        kSession.setGlobal("locationVisitCounts", locationVisitCounts);
+
+        System.out.println("dsadasd");
+
+        User user = new User();
+        user.setFirstName("John");
+        kSession.insert(user);
+
+        Restaurant restaurant1 = new Restaurant();
+        restaurant1.setName("Italian Bistro");
+        restaurant1.setLocation("123 Main St, Downtown, Springfield");
+
+        Restaurant restaurant2 = new Restaurant();
+        restaurant2.setName("Sushi Place");
+        restaurant2.setLocation("456 Elm St, Downtown, Springfield");
+
+        Restaurant restaurant3 = new Restaurant();
+        restaurant3.setName("Sushi Place2");
+        restaurant3.setLocation("456 Elm St, Downtown, Springfield");
+
+        Restaurant restaurant4 = new Restaurant();
+        restaurant4.setName("Sushi Place3");
+        restaurant4.setLocation("456 Elm St, Downtown, Springfield");
+
+        Review review1 = new Review();
+        review1.setUser(user);
+        review1.setRestaurant(restaurant1);
+        review1.setRating(3);
+
+        Review review2 = new Review();
+        review2.setUser(user);
+        review2.setRestaurant(restaurant2);
+        review2.setRating(4);
+
+        Review review3 = new Review();
+        review3.setUser(user);
+        review3.setRestaurant(restaurant3);
+        review3.setRating(3);
+
+        kSession.insert(restaurant1);
+        kSession.insert(restaurant2);
+        kSession.insert(restaurant3);
+        kSession.insert(restaurant4);
+
+        kSession.insert(review1);
+        kSession.insert(review2);
+        kSession.insert(review3);
+
+        kSession.fireAllRules();
+
+        assertTrue(user.getVisitedRestaurants().contains(restaurant1));
+        assertTrue(user.getVisitedRestaurants().contains(restaurant2));
+        assertTrue(user.getPreferredLocations().contains("Downtown"));
+        assertTrue(recommendedRestaurants.contains(restaurant2));
+    }
+
 }

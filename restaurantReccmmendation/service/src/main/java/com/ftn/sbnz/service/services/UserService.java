@@ -32,7 +32,6 @@ public class UserService implements IUserService{
         user.setPassword(registrationDTO.getPassword());
         user.setAdmin(false);
         user.setFavoriteRestaurants(new ArrayList<>());
-        user.setRecommendedRestaurants(new ArrayList<>());
         return userRepository.save(user);
     }
 

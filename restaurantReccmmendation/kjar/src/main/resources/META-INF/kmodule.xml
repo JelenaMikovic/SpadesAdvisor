@@ -11,4 +11,7 @@
     <kbase name="query" packages="query">
         <ksession name="queryKsession"/>
     </kbase>
+    <kbase name="forward" packages="forward">
+        <ksession name="forwardKsession"/>
+    </kbase>
 </kmodule>

@@ -1,10 +1,15 @@
 package com.ftn.sbnz.model.models;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -29,8 +34,18 @@ public class User {
     private boolean isAdmin;
     @ManyToMany
     private List<Restaurant> favoriteRestaurants;
+    @ElementCollection
+    @CollectionTable(name = "user_preferred_cuisines", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "cuisine")
+    @Enumerated(EnumType.STRING)
+    private List<CuisineType> preferredCuisines;
     @ManyToMany
-    private List<Restaurant> recommendedRestaurants;
+    private List<Restaurant> positivelyRatedRestaurants;
+    @ManyToMany
+    private List<Restaurant> visitedRestaurants;
+    @Column
+    private List<String> preferredLocations;
+
 
     public User(long id, String firstName, String lastName, String email, String password, boolean isAdmin) {
         this.id = id;
@@ -40,11 +55,18 @@ public class User {
         this.password = password;
         this.isAdmin = isAdmin;
         this.favoriteRestaurants = new ArrayList<>();
-        this.recommendedRestaurants = new ArrayList<>();
+        this.preferredCuisines = new ArrayList<>();
+        this.positivelyRatedRestaurants = new ArrayList<>();
+        this.visitedRestaurants = new ArrayList<>();
+        this.preferredLocations = new ArrayList<>();
     }
 
     public User() {
-        //TODO Auto-generated constructor stub
+        this.favoriteRestaurants = new ArrayList<>();
+        this.preferredCuisines = new ArrayList<>();
+        this.positivelyRatedRestaurants = new ArrayList<>();
+        this.visitedRestaurants = new ArrayList<>();
+        this.preferredLocations = new ArrayList<>();
     }
 
     public void addFavoriteRestaurant(Restaurant restaurant) {
@@ -84,8 +106,12 @@ public class User {
         return favoriteRestaurants;
     }
 
-    public List<Restaurant> getRecommendedRestaurants() {
-        return recommendedRestaurants;
+    public List<Restaurant> getPositivelyRatedRestaurants(){
+        return positivelyRatedRestaurants;
+    }
+
+    public List<CuisineType> getPreferredCuisines(){
+        return preferredCuisines;
     }
 
     // Setters
@@ -117,8 +143,27 @@ public class User {
         this.favoriteRestaurants = favoriteRestaurants;
     }
 
-    public void setRecommendedRestaurants(ArrayList<Restaurant> recommendedRestaurants) {
-        this.recommendedRestaurants = recommendedRestaurants;
+    public void setPositivelyRatedRestaurants(List<Restaurant> positivelyRatedRestaurants){
+        this.positivelyRatedRestaurants = positivelyRatedRestaurants;
     }
 
+    public void setPreferredCuisines(List<CuisineType> preferredCuisines){
+        this.preferredCuisines = preferredCuisines;
+    }
+
+    public List<Restaurant> getVisitedRestaurants() {
+        return visitedRestaurants;
+    }
+
+    public void setVisitedRestaurants(List<Restaurant> visitedRestaurants) {
+        this.visitedRestaurants = visitedRestaurants;
+    }
+
+    public List<String> getPreferredLocations() {
+        return preferredLocations;
+    }
+
+    public void setPreferredLocations(List<String> preferredLocations) {
+        this.preferredLocations = preferredLocations;
+    }
 }
