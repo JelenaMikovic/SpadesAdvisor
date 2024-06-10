@@ -29,5 +29,10 @@ public class ReportController {
     public ResponseEntity<HashMap<String, Integer>> usersFavouriteRestaurants(HttpSession session){
         return ResponseEntity.ok(reportService.usersFavouriteRestaurants((Long) session.getAttribute("userId")));
     }
+
+    @GetMapping("/favorite-cuisine")
+    public ResponseEntity<HashMap<String, Integer>> usersMostVisitedCuisine(HttpSession session){
+        return ResponseEntity.ok(reportService.usersMostVisitedCuisine((Long) session.getAttribute("userId")));
+    }
 	
 }

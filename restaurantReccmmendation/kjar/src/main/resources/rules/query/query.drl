@@ -7,28 +7,15 @@ import com.ftn.sbnz.model.models.CuisineType;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-/*
-query mostVisitedCuisineTypes(Long userId)
+query mostVisitedCuisineTypes(long userId)
     $user : User( id == userId )
-    $reviews : ArrayList() from collect(Review(user.id == userId))
+    $reviews : ArrayList() from collect(Review(user.getId() == userId))
     $cuisineMap : HashMap() from makeCuisineTypeMap($reviews)
-    $maxCount : Number() from accumulate(
-        HashMap.Entry(String.class, Integer.class) from $cuisineMap.entrySet(),
-        init( int max = 0; ),
-        action( if(value > max) max = value; ),
-        result( max )
-    )
-    $favoriteCuisineTypes : ArrayList() from accumulate(
-        HashMap.Entry(String.class, Integer.class) from $cuisineMap.entrySet(),
-        init( ArrayList<String> list = new ArrayList<>(); ),
-        action( if(value == $maxCount) list.add(key); ),
-        result( list )
-    )
 end
 
-function HashMap makeCuisineTypeMap(ArrayList list) {
+function HashMap<String, Integer> makeCuisineTypeMap(ArrayList list) {
     HashMap<String, Integer> map = new HashMap<>();
-    for (Object o : list) {
+    for(Object o : list) {
         Review review = (Review) o;
         Restaurant restaurant = review.getRestaurant();
         CuisineType cuisineType = restaurant.getCuisineType();
@@ -38,7 +25,7 @@ function HashMap makeCuisineTypeMap(ArrayList list) {
     }
     return map;
 }
-*/
+
 query usersFavouriteRestaurants(long userId)
     $user : User( id == userId )
     $reviews : ArrayList() from collect(Review(user.getId() == userId, rating == 5))

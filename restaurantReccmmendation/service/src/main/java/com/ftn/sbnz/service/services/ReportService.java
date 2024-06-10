@@ -45,18 +45,25 @@ public class ReportService implements IReportService {
                 map.merge(key, resultMap.get(key), Integer::sum);
             }
         }
+        kieSession.dispose();
         return map;
     }
     
     @Override
     public HashMap<String, Integer> usersMostVisitedCuisine(Long userId) {
         KieSession kieSession = kieContainer.newKieSession("queryKsession");
+        for(Review r: reviewRepository.findAll()) {
+            kieSession.insert(r);
+            kieSession.insert(r.getUser());
+            kieSession.insert(r.getRestaurant());
+        }
         QueryResults results = kieSession.getQueryResults("mostVisitedCuisineTypes", userId);
         HashMap<String, Integer> map = new HashMap<>();
         for (QueryResultsRow row : results) {
             HashMap<String, Integer> cuisineTypeMap = (HashMap<String, Integer>) row.get("$cuisineMap");
             map.putAll(cuisineTypeMap);
         }
+        kieSession.dispose();
         return map;
     }
     
