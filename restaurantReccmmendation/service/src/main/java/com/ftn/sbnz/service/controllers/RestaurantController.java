@@ -1,6 +1,10 @@
 package com.ftn.sbnz.service.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ftn.sbnz.model.models.Restaurant;
+import com.ftn.sbnz.service.dtos.ReccomendationsDTO;
 import com.ftn.sbnz.service.dtos.RestaurantDTO;
 import com.ftn.sbnz.service.dtos.RestaurantFilterDTO;
 import com.ftn.sbnz.service.services.interfaces.IRestaurantService;
@@ -36,6 +41,11 @@ public class RestaurantController {
 	@PostMapping("/filtered")
     public List<Restaurant> getFilteredRestaurants(@RequestBody RestaurantFilterDTO filterDTO) {
         return restaurantService.getFilteredRestaurants(filterDTO);
+    }
+
+    @GetMapping("/reccomended")
+    public ReccomendationsDTO getReccomendedRestaurants(HttpSession session) {
+        return restaurantService.getReccomendedRestaurants((Long) session.getAttribute("userId"));
     }
 
 	@GetMapping("/search")

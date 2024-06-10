@@ -43,7 +43,9 @@ public class User {
     private List<Restaurant> positivelyRatedRestaurants;
     @ManyToMany
     private List<Restaurant> visitedRestaurants;
-    @Column
+    @ElementCollection
+    @CollectionTable(name = "user_preferred_locations", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "preferred_location")
     private List<String> preferredLocations;
 
 

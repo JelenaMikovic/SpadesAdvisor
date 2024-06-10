@@ -1,7 +1,9 @@
 package com.ftn.sbnz.service.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.kie.api.runtime.KieContainer;
@@ -10,9 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.model.models.Restaurant;
+import com.ftn.sbnz.model.models.Review;
+import com.ftn.sbnz.service.dtos.ReccomendationsDTO;
 import com.ftn.sbnz.service.dtos.RestaurantDTO;
 import com.ftn.sbnz.service.dtos.RestaurantFilterDTO;
 import com.ftn.sbnz.service.repositories.RestaurantRepository;
+import com.ftn.sbnz.service.repositories.ReviewRepository;
 import com.ftn.sbnz.service.repositories.UserRepository;
 import com.ftn.sbnz.service.services.interfaces.IRestaurantService;
 import com.ftn.sbnz.model.models.User;
@@ -24,12 +29,14 @@ public class RestaurantService implements IRestaurantService{
     private RestaurantRepository restaurantRepository;
     private final KieContainer kieContainer;
     private UserRepository userRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
-    public RestaurantService(RestaurantRepository restaurantRepository, KieContainer kieContainer, UserRepository userRepository) {
+    public RestaurantService(RestaurantRepository restaurantRepository, KieContainer kieContainer, UserRepository userRepository, ReviewRepository reviewRepository) {
         this.restaurantRepository = restaurantRepository;
         this.kieContainer = kieContainer;
         this.userRepository = userRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     @Override 
@@ -50,12 +57,22 @@ public class RestaurantService implements IRestaurantService{
 
         kieSession.fireAllRules();
         kieSession.dispose();
-        return recommendations;
+        List<Restaurant> restaurants = new ArrayList<>();
+        for(Restaurant r: recommendations){
+            r.setReviews(null);
+            restaurants.add(r);
+        }
+        return restaurants;
     }
 
     @Override
     public List<Restaurant> searchRestaurantsByName(String name) {
-        return restaurantRepository.findByNameContainingIgnoreCase(name);
+        List<Restaurant> restaurants = new ArrayList<>();
+        for(Restaurant r: restaurantRepository.findByNameContainingIgnoreCase(name)){
+            r.setReviews(null);
+            restaurants.add(r);
+        }
+        return restaurants;
     }
 
     @Override
@@ -97,5 +114,50 @@ public class RestaurantService implements IRestaurantService{
         return true;
     }
 
+    @Override 
+    public ReccomendationsDTO getReccomendedRestaurants(Long userId) {
+        List<Restaurant> recommendedRestaurantsRating = new ArrayList<>();
+        List<Restaurant> recommendedRestaurantsLocation = new ArrayList<>();
+        Map<String, Integer> locationVisitCounts = new HashMap<>();
+
+        KieSession kieSession = kieContainer.newKieSession("forwardKsession");
+
+        kieSession.setGlobal("recommendedRestaurantsLocation", recommendedRestaurantsLocation);
+        kieSession.setGlobal("locationVisitCounts", locationVisitCounts);
+        kieSession.setGlobal("recommendedRestaurantsRating", recommendedRestaurantsRating);
+
+        
+        User user = userRepository.findById(userId).get();
+        kieSession.insert(user);
+
+        for(Restaurant restaurant: restaurantRepository.findAll()) {
+            kieSession.insert(restaurant);
+        }
+
+        for(Review review: reviewRepository.findAll()) {
+            kieSession.insert(review);
+        }
+
+        kieSession.fireAllRules();
+        kieSession.dispose();
+
+        ReccomendationsDTO dto = new ReccomendationsDTO();
+
+        List<Restaurant> restaurants = new ArrayList<>();
+        for(Restaurant r: recommendedRestaurantsLocation){
+            r.setReviews(null);
+            restaurants.add(r);
+        }
+        dto.setRecommendedRestaurantsLocation(restaurants);
+
+        restaurants = new ArrayList<>();
+        for(Restaurant r: recommendedRestaurantsRating){
+            r.setReviews(null);
+            restaurants.add(r);
+        }
+        dto.setRecommendedRestaurantsRating(restaurants);
+
+        return dto;
+    }
 
 }

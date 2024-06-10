@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-global List<Restaurant> recommendedRestaurants;
+global List<Restaurant> recommendedRestaurantsRating;
+global Map<String, Integer> locationVisitCounts;
+global List<Restaurant> recommendedRestaurantsLocation;
 
 rule "Add restaurant to positively rated list"
 when
@@ -41,11 +43,11 @@ when
     $user : User(preferredCuisines.size() > 0)
     $restaurant : Restaurant(cuisineType memberOf $user.getPreferredCuisines(), this not memberOf $user.getPositivelyRatedRestaurants())
 then
-    recommendedRestaurants.add($restaurant);
-    System.out.println("Restaurant " + $restaurant.getName() + " recommended to user " + $user.getFirstName());
+    if(!recommendedRestaurantsRating.contains($restaurant)){
+        recommendedRestaurantsRating.add($restaurant);
+        System.out.println("Restaurant " + $restaurant.getName() + " recommended to user " + $user.getFirstName());
+    }
 end
-
-global Map<String, Integer> locationVisitCounts;
 
 function String getPartOfCity(String location) {
     String[] locationParts = location.split(",");
@@ -91,6 +93,8 @@ when
     $user : User(preferredLocations.size() > 0)
     $restaurant : Restaurant($user.getPreferredLocations().contains(getPartOfCity($restaurant.getLocation())))
 then
-    recommendedRestaurants.add($restaurant);
-    System.out.println("Restaurant " + $restaurant.getName() + " recommended to user " + $user.getFirstName());
+    if(!recommendedRestaurantsLocation.contains($restaurant)){
+        recommendedRestaurantsLocation.add($restaurant);
+        System.out.println("Restaurant " + $restaurant.getName() + " recommended to user " + $user.getFirstName());
+    }
 end

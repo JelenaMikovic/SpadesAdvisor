@@ -35,8 +35,6 @@ public class CEPConfigTest {
             // Create a new KieSession
             KieSession kieSession = kieContainer.newKieSession("forwardKsession");
 
-            System.out.println("dsadasd");
-
             // Create some Restaurant objects
             Restaurant restaurant1 = new Restaurant();
             restaurant1.setName("Italian Bistro");
@@ -55,7 +53,7 @@ public class CEPConfigTest {
             List<Restaurant> recommendedRestaurants = new ArrayList<>();
 
             // Set the global list of recommended restaurants
-            kieSession.setGlobal("recommendedRestaurants", recommendedRestaurants);
+            kieSession.setGlobal("recommendedRestaurantsRating", recommendedRestaurants);
 
             // Create a User object
             User user = new User();
@@ -100,7 +98,7 @@ public class CEPConfigTest {
         List<Restaurant> recommendedRestaurants = new ArrayList<>();
         Map<String, Integer> locationVisitCounts = new HashMap<>();
 
-        kSession.setGlobal("recommendedRestaurants", recommendedRestaurants);
+        kSession.setGlobal("recommendedRestaurantsLocation", recommendedRestaurants);
         kSession.setGlobal("locationVisitCounts", locationVisitCounts);
 
         System.out.println("dsadasd");
