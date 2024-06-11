@@ -1,0 +1,77 @@
+template header
+minReviewsInPastMonth,
+minRestaurantRating,
+desiredCuisineType
+
+package template;
+
+import com.ftn.sbnz.model.models.User;
+import com.ftn.sbnz.model.models.Review;
+import com.ftn.sbnz.model.models.Restaurant;
+import com.ftn.sbnz.model.models.CuisineType;
+import com.ftn.sbnz.model.models.AdminSetting;
+import java.util.HashMap;
+import java.util.ArrayList;
+
+template "set-trendning"
+
+rule "dsad"
+when
+    $restaurant: Restaurant()
+then
+    System.out.println("Got:" + $restaurant.getName())
+end
+
+rule "Mark restaurant as trendning"
+salience 10
+no-loop true
+when
+    $restaurant: Restaurant($cuisineType: cuisineType)
+    $reviews: List() from collect(
+        Review(
+            restaurant == $restaurant,
+        )
+    )
+    $reviewCount: Number() from accumulate(
+        $review: Review() from $reviews,
+        count($review)
+    )
+    $reviewSum: Number() from accumulate(
+        $re: Review() from $reviews,
+        sum($re.getRating())
+    )
+    eval($reviewCount.intValue() > @{minReviewsInPastMonth} && ($reviewSum.intValue()/$reviewCount.intValue()) >= @{minRestaurantRating} && $cuisineType == @{desiredCuisineType})
+then
+    System.out.println("Trendning:" + $restaurant.getName())
+    modify($restaurant) {
+        setTrending(true);
+    }
+end
+
+rule "Mark restaurant as not trending"
+salience 5
+no-loop true
+when
+    $restaurant: Restaurant($cuisineType: cuisineType)
+    $reviews: List() from collect(
+        Review(
+            restaurant == $restaurant,
+        )
+    )
+    $reviewCount: Number() from accumulate(
+        $review: Review() from $reviews,
+        count($review)
+    )
+    $reviewSum: Number() from accumulate(
+        $re: Review() from $reviews,
+        sum($re.getRating())
+    )
+    eval(!($reviewCount.intValue() > @{minReviewsInPastMonth} && ($reviewSum.intValue()/$reviewCount.intValue()) >= @{minRestaurantRating} && $cuisineType == @{desiredCuisineType}))
+then
+    System.out.println("NOT Trendning:" + $restaurant.getName())
+    modify($restaurant) {
+        setTrending(false);
+    }
+end
+
+end template

@@ -14,4 +14,7 @@
     <kbase name="forward" packages="forward">
         <ksession name="forwardKsession"/>
     </kbase>
+    <kbase name="template" packages="template">
+        <ksession name="templateKsession"/>
+    </kbase>
 </kmodule>

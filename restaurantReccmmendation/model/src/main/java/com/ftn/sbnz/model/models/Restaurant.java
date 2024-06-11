@@ -36,9 +36,12 @@ public class Restaurant {
     private Boolean isSmokerFriendly;
     @OneToMany
     private List<Review> reviews;
+    @Column
+    private boolean isTrending;
 
     public Restaurant(){
-        
+        this.reviews = new ArrayList<>();
+        this.isTrending = false;
     }
 
     public Restaurant(long id, CuisineType cuisineType, String location, double price, String openingHour, String closingHour, Boolean isVegetarianFriendly, Boolean isSmokerFriendly) {
@@ -51,6 +54,7 @@ public class Restaurant {
         this.reviews = new ArrayList<>();
         this.isSmokerFriendly = isSmokerFriendly;
         this.isVegetarianFriendly = isVegetarianFriendly;
+        this.isTrending = false;
     }
 
     public void addReview(Review review) {
@@ -98,6 +102,10 @@ public class Restaurant {
         return isVegetarianFriendly;
     }
 
+    public Boolean getIsTrendning() {
+        return isTrending;
+    }
+
     // Setters
     public void setId(long id) {
         this.id = id;
@@ -137,5 +145,9 @@ public class Restaurant {
 
     public void setVegetarianFriendly(Boolean isVegetarianFriendly) {
         this.isVegetarianFriendly = isVegetarianFriendly;
+    }
+
+    public void setTrendning(Boolean isTrending) {
+        this.isTrending = isTrending;
     }
 }

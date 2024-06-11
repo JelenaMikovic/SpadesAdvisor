@@ -1,16 +1,24 @@
 package com.ftn.sbnz.service.services;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.drools.core.base.RuleNameMatchesAgendaFilter;
+import org.drools.template.ObjectDataCompiler;
+import org.kie.api.builder.Message;
+import org.kie.api.builder.Results;
+import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.internal.utils.KieHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ftn.sbnz.model.models.AdminSetting;
 import com.ftn.sbnz.model.models.Restaurant;
 import com.ftn.sbnz.model.models.Review;
 import com.ftn.sbnz.service.dtos.ReccomendationsDTO;
@@ -170,5 +178,73 @@ public class RestaurantService implements IRestaurantService{
         }
         return restaurants;
     }
+
+    @Override
+    public List<Restaurant> getTrendning() {
+        List<Restaurant> restaurants = new ArrayList<>();
+        for(Restaurant r: restaurantRepository.findAll()){
+            if(r.getIsTrendning()){
+                r.setReviews(null);
+                restaurants.add(r);
+            }
+        }
+        return restaurants;
+    }
+
+    @Override
+    public Boolean addTemplate(AdminSetting adminSetting, Long userId) {
+        User user = userRepository.findById(userId).get();
+        //if(!user.isAdmin()) return false;
+
+        //KieSession kieSession = kieContainer.newKieSession("templateKsession");
+
+        InputStream template = RestaurantService.class.getResourceAsStream("./kjar/src/main/resources/rules/template/template.drt");
+
+        List<AdminSetting> data = new ArrayList<>();
+		data.add(adminSetting);
+
+		ObjectDataCompiler converter = new ObjectDataCompiler();
+        String drl = converter.compile(data, template);
+
+        KieSession kieSession = createKieSessionFromDRL(drl);
+
+        List<Restaurant> restaurants = restaurantRepository.findAll(); 
+        for (Restaurant restaurant : restaurants) {
+            kieSession.insert(restaurant);
+        }
+
+        for (Review review: reviewRepository.findAll()){
+            review.setUser(null);
+            kieSession.insert(review);
+        }
+
+        kieSession.fireAllRules();
+
+        for (Restaurant restaurant : restaurants) {
+            
+            restaurantRepository.save(restaurant);
+        }
+
+        kieSession.dispose();
+        return true;
+    }
+
+    private KieSession createKieSessionFromDRL(String drl){
+		KieHelper kieHelper = new KieHelper();
+		kieHelper.addContent(drl, ResourceType.DRL);
+
+		Results results = kieHelper.verify();
+
+		if (results.hasMessages(Message.Level.WARNING, Message.Level.ERROR)){
+			List<Message> messages = results.getMessages(Message.Level.WARNING, Message.Level.ERROR);
+			for (Message message : messages) {
+				System.out.println("Error: "+message.getText());
+			}
+
+			throw new IllegalStateException("Compilation errors were found. Check the logs.");
+		}
+
+		return kieHelper.build().newKieSession();
+	}
 
 }

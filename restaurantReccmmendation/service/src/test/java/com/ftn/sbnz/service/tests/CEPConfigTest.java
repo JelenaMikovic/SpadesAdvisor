@@ -3,6 +3,7 @@ package com.ftn.sbnz.service.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,13 +12,14 @@ import java.util.concurrent.TimeUnit;
 
 import org.drools.core.time.SessionPseudoClock;
 import org.junit.Test;
-// import org.kie.api.KieServices;
-// import org.kie.api.runtime.KieContainer;
-// import org.kie.api.runtime.KieSession;
+import org.drools.compiler.kie.builder.impl.KieFileSystemImpl;
+import org.drools.template.ObjectDataCompiler;
 import org.kie.api.KieServices;
+import org.kie.api.builder.KieFileSystem;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
+import com.ftn.sbnz.model.models.AdminSetting;
 import com.ftn.sbnz.model.models.CuisineType;
 import com.ftn.sbnz.model.models.Restaurant;
 import com.ftn.sbnz.model.models.Review;
@@ -230,4 +232,76 @@ public class CEPConfigTest {
             System.out.println("Recommended Restaurant: " + restaurant.getName())
         );
     }
-}
+
+    @Test
+    public void test4() {
+        // Load KieServices
+        KieServices kieServices = KieServices.Factory.get();
+
+        // Load the template file
+        InputStream template = getClass().getResourceAsStream("/template/template.drt");
+        System.out.println(template);
+
+        // Compile the template with dynamic parameters
+        ObjectDataCompiler converter = new ObjectDataCompiler();
+        List<HashMap<String, Object>> parameters = new ArrayList<>();
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("ruleName", "Rule1");
+        parameters.add(params);
+        String drl = converter.compile(parameters, template);
+
+        // Print the generated DRL for debugging
+        System.out.println(drl);
+
+        // Load DRL into KieFileSystem
+        KieFileSystem kfs = kieServices.newKieFileSystem();
+        kfs.write("src/main/resources/template.drl", drl);
+
+        // Build the KieModule
+        kieServices.newKieBuilder(kfs).buildAll();
+
+        // Create KieContainer
+        KieContainer kieContainer = kieServices.newKieContainer(kieServices.getRepository().getDefaultReleaseId());
+
+        // Create a new KieSession
+        KieSession kSession = kieContainer.newKieSession();
+
+        try {
+            // Create an AdminSetting object with specific conditions
+            AdminSetting adminSetting = new AdminSetting();
+            adminSetting.setMinReviewsInPastMonth(10);
+            adminSetting.setMinRestaurantRating(4.5);
+            adminSetting.setDesiredCuisineType(CuisineType.AMERICAN); // Example cuisine type
+
+            // Insert the AdminSetting object into the Drools session
+            kSession.insert(adminSetting);
+
+            // Create a Restaurant object that matches the conditions
+            Restaurant restaurant = new Restaurant();
+            restaurant.setName("Test Restaurant");
+            restaurant.setCuisineType(CuisineType.AMERICAN);
+            ArrayList<Review> reviews = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                reviews.add(new Review());
+            }
+            restaurant.setReviews(reviews);
+
+            // Insert the Restaurant object into the Drools session
+            kSession.insert(restaurant);
+
+            // Print debug information
+            System.out.println("AdminSetting inserted: " + adminSetting);
+            System.out.println("Restaurant inserted: " + restaurant);
+
+            // Fire all rules in the session
+            int rulesFired = kSession.fireAllRules();
+            System.out.println("Number of rules fired: " + rulesFired);
+
+            //assertEquals(1, rulesFired);
+
+        } finally {
+            // Dispose of the session to release resources
+            kSession.dispose();
+        }
+    }
+    }

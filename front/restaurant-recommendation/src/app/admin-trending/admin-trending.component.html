@@ -2,21 +2,21 @@
 <form (ngSubmit)="submitForm()" #filterForm="ngForm">
     <mat-form-field appearance="fill">
       <mat-label>Rating (1-5)</mat-label>
-      <input matInput type="number" step="0.1" min="1" max="5" [(ngModel)]="filterData.rating" name="rating" required>
+      <input matInput type="number" step="0.1" min="1" max="5" [(ngModel)]="filterData.minRestaurantRating" name="minRestaurantRating" required>
     </mat-form-field>
 
     <br>
   
     <mat-form-field appearance="fill">
       <mat-label>Number of Reviews</mat-label>
-      <input matInput type="number" min="0" [(ngModel)]="filterData.numReviews" name="numReviews" required>
+      <input matInput type="number" min="0" [(ngModel)]="filterData.minReviewsInPastMonth" name="minReviewsInPastMonth" required>
     </mat-form-field>
   
     <br>
 
     <mat-form-field appearance="fill">
       <mat-label>Type of Cuisine</mat-label>
-      <mat-select [(ngModel)]="filterData.cuisineType" name="cuisineType" required>
+      <mat-select [(ngModel)]="filterData.desiredCuisineType" name="desiredCuisineType" required>
         <mat-option value="ITALIAN">Italian</mat-option>
         <mat-option value="CHINESE">Chinese</mat-option>
         <mat-option value="MEXICAN">Mexican</mat-option>

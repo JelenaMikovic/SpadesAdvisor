@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.ftn.sbnz.model.models.AdminSetting;
 import com.ftn.sbnz.model.models.Restaurant;
 import com.ftn.sbnz.service.dtos.ReccomendationsDTO;
 import com.ftn.sbnz.service.dtos.RestaurantDTO;
@@ -56,6 +57,16 @@ public class RestaurantController {
     @GetMapping("/top-picks")
     public List<Restaurant> getTopPicks(HttpSession session) {
         return restaurantService.getTopPicks((Long) session.getAttribute("userId"));
+    }
+
+    @GetMapping("/trendning")
+    public List<Restaurant> getTrendning() {
+        return restaurantService.getTrendning();
+    }
+
+    @PostMapping("/tempalate")
+    public Boolean addTemplate(@RequestBody AdminSetting adminSetting, @SessionAttribute("userId") Long userId){
+        return restaurantService.addTemplate(adminSetting, userId);        
     }
 
     @PostMapping("/addToFavourites")

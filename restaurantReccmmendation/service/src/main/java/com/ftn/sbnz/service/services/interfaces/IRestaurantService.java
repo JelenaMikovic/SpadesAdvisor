@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ftn.sbnz.model.models.AdminSetting;
 import com.ftn.sbnz.model.models.Restaurant;
 import com.ftn.sbnz.service.dtos.ReccomendationsDTO;
 import com.ftn.sbnz.service.dtos.RestaurantDTO;
@@ -22,4 +23,8 @@ public interface IRestaurantService {
     ReccomendationsDTO getReccomendedRestaurants(Long userId);
 
     List<Restaurant> getTopPicks(Long attribute);
+
+    List<Restaurant> getTrendning();
+
+    Boolean addTemplate(AdminSetting adminSetting, Long userId);
 }

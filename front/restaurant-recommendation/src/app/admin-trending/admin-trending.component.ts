@@ -8,15 +8,15 @@ import { Component } from '@angular/core';
 })
 export class AdminTrendingComponent {
   filterData = {
-    rating: null,
-    numReviews: null,
-    cuisineType: ''
+    minRestaurantRating: null,
+    minReviewsInPastMonth: null,
+    desiredCuisineType: ''
   };
 
   constructor(private http: HttpClient) {}
 
   submitForm() {
-    this.http.post('http://localhost:8080/api/restaurants/template', this.filterData)
+    this.http.post('http://localhost:8080/api/restaurants/tempalate', this.filterData, {withCredentials: true})
       .subscribe(
         (response) => {
           console.log('Form data sent successfully!', response);

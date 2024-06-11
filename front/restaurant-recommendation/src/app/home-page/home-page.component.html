@@ -1,25 +1,4 @@
 <body>
-    <div class="titles">
-        <h2><mat-icon>star</mat-icon> Trending: </h2>
-    </div>
-    <hr>
-
-    <div class="restaurant-list">
-        <mat-card *ngFor="let restaurant of restaurants" class="restaurant-card">
-            <img mat-card-image src="https://cdn.vox-cdn.com/thumbor/5d_RtADj8ncnVqh-afV3mU-XQv0=/0x0:1600x1067/1200x900/filters:focal(672x406:928x662)/cdn.vox-cdn.com/uploads/chorus_image/image/57698831/51951042270_78ea1e8590_h.7.jpg" alt="Photo of a Shiba Inu">
-          <mat-card-header>
-            <mat-card-subtitle>{{ restaurant.location }}</mat-card-subtitle>
-            <mat-card-title>{{ restaurant.name }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p class="s">4.45 (112) · {{ cuisineTypes[restaurant.cuisine_type] }} · {{ restaurant.price | currency }}</p>
-            <br>
-            <p><mat-icon>schedule</mat-icon> Working Hours: {{ restaurant.opening_hour }} - {{ restaurant.closing_hour }}</p>
-            <p><mat-icon> restaurant_menu</mat-icon> Vegetarian Friendly: {{ restaurant.is_vegetarian_friendly ? 'Yes' : 'No' }}</p>
-            <p><mat-icon>smoking_rooms</mat-icon> Smoking allowed: {{ restaurant.is_smoker_friendly ? 'Yes' : 'No' }}</p>
-          </mat-card-content>
-        </mat-card>
-      </div>
 
     <div class="titles">
         <h2><mat-icon>star</mat-icon> Recommended based on your ratings: </h2>
@@ -34,7 +13,7 @@
           <mat-card-title>{{ restaurant.name }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p class="s">4.45 (112) · {{ cuisineTypes[restaurant.cuisine_type] }} · {{ restaurant.price | currency }}</p>
+          <p class="s">4.45 (112) · {{ restaurant.cuisine_type }} · {{ restaurant.price | currency }}</p>
           <br>
           <p><mat-icon>schedule</mat-icon> Working Hours: {{ restaurant.opening_hour }} - {{ restaurant.closing_hour }}</p>
           <p><mat-icon> restaurant_menu</mat-icon> Vegetarian Friendly: {{ restaurant.is_vegetarian_friendly ? 'Yes' : 'No' }}</p>
@@ -56,7 +35,7 @@
         <mat-card-title>{{ restaurant.name }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p class="s">4.45 (112) · {{ cuisineTypes[restaurant.cuisine_type] }} · {{ restaurant.price | currency }}</p>
+        <p class="s">4.45 (112) · {{ restaurant.cuisine_type }} · {{ restaurant.price | currency }}</p>
         <br>
         <p><mat-icon>schedule</mat-icon> Working Hours: {{ restaurant.opening_hour }} - {{ restaurant.closing_hour }}</p>
         <p><mat-icon> restaurant_menu</mat-icon> Vegetarian Friendly: {{ restaurant.is_vegetarian_friendly ? 'Yes' : 'No' }}</p>
@@ -78,7 +57,7 @@
         <mat-card-title>{{ restaurant.name }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p class="s">4.45 (112) · {{ cuisineTypes[restaurant.cuisine_type] }} · {{ restaurant.price | currency }}</p>
+        <p class="s">4.45 (112) · {{ restaurant.cuisine_type }} · {{ restaurant.price | currency }}</p>
         <br>
         <p><mat-icon>schedule</mat-icon> Working Hours: {{ restaurant.opening_hour }} - {{ restaurant.closing_hour }}</p>
         <p><mat-icon> restaurant_menu</mat-icon> Vegetarian Friendly: {{ restaurant.is_vegetarian_friendly ? 'Yes' : 'No' }}</p>
@@ -86,4 +65,27 @@
       </mat-card-content>
     </mat-card>
   </div>
+
+  <div class="titles">
+    <h2><mat-icon>star</mat-icon> Trending: </h2>
+</div>
+<hr>
+
+<div class="restaurant-list">
+    <mat-card *ngFor="let restaurant of restaurants" class="restaurant-card">
+        <img mat-card-image src="https://cdn.vox-cdn.com/thumbor/5d_RtADj8ncnVqh-afV3mU-XQv0=/0x0:1600x1067/1200x900/filters:focal(672x406:928x662)/cdn.vox-cdn.com/uploads/chorus_image/image/57698831/51951042270_78ea1e8590_h.7.jpg" alt="Photo of a Shiba Inu">
+      <mat-card-header>
+        <mat-card-subtitle>{{ restaurant.location }}</mat-card-subtitle>
+        <mat-card-title>{{ restaurant.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="s">4.45 (112) · {{ restaurant.cuisine_type }} · {{ restaurant.price | currency }}</p>
+        <br>
+        <p><mat-icon>schedule</mat-icon> Working Hours: {{ restaurant.opening_hour }} - {{ restaurant.closing_hour }}</p>
+        <p><mat-icon> restaurant_menu</mat-icon> Vegetarian Friendly: {{ restaurant.is_vegetarian_friendly ? 'Yes' : 'No' }}</p>
+        <p><mat-icon>smoking_rooms</mat-icon> Smoking allowed: {{ restaurant.is_smoker_friendly ? 'Yes' : 'No' }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
 </body>

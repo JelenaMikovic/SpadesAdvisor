@@ -60,5 +60,15 @@ export class HomePageComponent {
           console.error('Error fetching recommended restaurants', error);
         }
       );
+      this.http.get<any>('http://localhost:8080/api/restaurants/trendning')
+      .subscribe(
+        (data: any) => {
+          console.log(data);
+          this.restaurants = data;
+        },
+        (error: any) => {
+          console.error('Error fetching recommended restaurants', error);
+        }
+      );
   }
 }
