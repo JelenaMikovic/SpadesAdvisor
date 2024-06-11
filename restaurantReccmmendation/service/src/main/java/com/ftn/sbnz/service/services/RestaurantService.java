@@ -160,4 +160,15 @@ public class RestaurantService implements IRestaurantService{
         return dto;
     }
 
+    @Override
+    public List<Restaurant> getTopPicks(Long attribute) {
+        User user = userRepository.findById(attribute).get();
+        List<Restaurant> restaurants = new ArrayList<>();
+        for(Restaurant r: user.getTopPicks()){
+            r.setReviews(null);
+            restaurants.add(r);
+        }
+        return restaurants;
+    }
+
 }

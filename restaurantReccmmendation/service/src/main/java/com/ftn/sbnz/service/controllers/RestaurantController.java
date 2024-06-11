@@ -53,6 +53,11 @@ public class RestaurantController {
         return restaurantService.searchRestaurantsByName(name);
     }
 
+    @GetMapping("/top-picks")
+    public List<Restaurant> getTopPicks(HttpSession session) {
+        return restaurantService.getTopPicks((Long) session.getAttribute("userId"));
+    }
+
     @PostMapping("/addToFavourites")
     public Boolean addToFavorites(@PathVariable Long idRestaurant, @SessionAttribute("userId") Long userId){
         return restaurantService.addFavoriteRestaurant(idRestaurant, userId);        

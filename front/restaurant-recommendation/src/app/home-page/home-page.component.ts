@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css']
 })
+
 export class HomePageComponent {
 
   cuisineTypes = [
@@ -26,6 +27,7 @@ export class HomePageComponent {
   restaurants: any[] = [];
   restaurantsRating: any[] = [];
   restaurantsLocation: any[] = [];
+  topPicks: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +45,16 @@ export class HomePageComponent {
           console.log(data);
           this.restaurantsRating = data.recommendedRestaurantsRating || [];     
           this.restaurantsLocation = data.recommendedRestaurantsLocation || [];               
+        },
+        (error: any) => {
+          console.error('Error fetching recommended restaurants', error);
+        }
+      );
+    this.http.get<any>('http://localhost:8080/api/restaurants/top-picks', { withCredentials: true })
+      .subscribe(
+        (data: any) => {
+          console.log(data);
+          this.topPicks = data;
         },
         (error: any) => {
           console.error('Error fetching recommended restaurants', error);

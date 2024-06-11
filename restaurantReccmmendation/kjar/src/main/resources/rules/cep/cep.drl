@@ -41,6 +41,7 @@ then
         for (Object object : allRestaurants) {
             Restaurant restaurant = (Restaurant) object;
             if (restaurant.getCuisineType().equals($cuisineType)) {
+                System.out.println("Restaurant " + restaurant.getName() + " recommended to user " + $user.getFirstName());
                 recommendationList.add(restaurant);
             }
         }

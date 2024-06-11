@@ -47,6 +47,8 @@ public class User {
     @CollectionTable(name = "user_preferred_locations", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "preferred_location")
     private List<String> preferredLocations;
+    @ManyToMany
+    private List<Restaurant> topPicks;
 
 
     public User(long id, String firstName, String lastName, String email, String password, boolean isAdmin) {
@@ -61,6 +63,7 @@ public class User {
         this.positivelyRatedRestaurants = new ArrayList<>();
         this.visitedRestaurants = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
+        this.topPicks = new ArrayList<>();
     }
 
     public User() {
@@ -167,5 +170,13 @@ public class User {
 
     public void setPreferredLocations(List<String> preferredLocations) {
         this.preferredLocations = preferredLocations;
+    }
+
+    public List<Restaurant> getTopPicks() {
+        return topPicks;
+    }
+
+    public void setTopPicks(List<Restaurant> topPicks) {
+        this.topPicks = topPicks;
     }
 }

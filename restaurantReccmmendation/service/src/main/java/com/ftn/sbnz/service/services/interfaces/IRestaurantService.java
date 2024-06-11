@@ -20,4 +20,6 @@ public interface IRestaurantService {
 
     Boolean addRestaurant(RestaurantDTO restaurantDTO);
     ReccomendationsDTO getReccomendedRestaurants(Long userId);
+
+    List<Restaurant> getTopPicks(Long attribute);
 }
