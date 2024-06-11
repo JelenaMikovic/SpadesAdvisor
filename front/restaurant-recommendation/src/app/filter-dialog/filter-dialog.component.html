@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Filter Options</h2>
+<mat-dialog-content>
+  <form #filterForm="ngForm">
+    <mat-checkbox [(ngModel)]="filterData.isSmokerFriendly" name="isSmokerFriendly">Smoker Friendly</mat-checkbox>
+    <mat-checkbox [(ngModel)]="filterData.isVegetarianFriendly" name="isVegetarianFriendly">Vegetarian Friendly</mat-checkbox>
+    <mat-form-field appearance="fill">
+        <mat-label>Location</mat-label>
+        <input matInput [(ngModel)]="filterData.location" name="location" placeholder="Enter a location">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Type of Food</mat-label>
+        <mat-select [(ngModel)]="filterData.cuisineType" name="cuisineType" placeholder="Select">
+          <mat-option value="ITALIAN">Italian</mat-option>
+          <mat-option value="CHINESE">Chinese</mat-option>
+          <mat-option value="MEXICAN">Mexican</mat-option>
+          <mat-option value="AMERICAN">American</mat-option>
+          <mat-option value="FRENCH">French</mat-option>
+          <mat-option value="JAPANESE">Japanese</mat-option>
+          <mat-option value="INDIAN">Indian</mat-option>
+          <mat-option value="THAI">Thai</mat-option>
+          <mat-option value="GREEK">Greek</mat-option>
+          <mat-option value="SERBIAN">Serbian</mat-option>
+          <mat-option value="OTHER">Other</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Price</mat-label>
+        <input matInput [(ngModel)]="filterData.maxPrice" name="maxPrice" type="number" placeholder="Enter maximum price">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Minimum Rating</mat-label>
+        <input matInput [(ngModel)]="filterData.minAvgRating" name="minAvgRating" type="number" placeholder="Enter minimum rating">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button color="primary" (click)="applyFilters()">Apply</button>
+</mat-dialog-actions>

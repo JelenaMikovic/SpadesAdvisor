@@ -1,0 +1,36 @@
+package basic;
+
+import java.util.List;
+import java.util.ArrayList;
+
+import com.ftn.sbnz.model.models.Restaurant;
+import com.ftn.sbnz.service.dtos.RestaurantFilterDTO;
+
+global List<Restaurant> recommendations;
+
+rule "Recommend restaurants based on user's location"
+when 
+    $filter: RestaurantFilterDTO(location != null, $location : location.toLowerCase())
+    $restaurant: Restaurant(location.toLowerCase().contains($location))
+then
+    recommendations.add($restaurant);
+    insert($restaurant);
+end
+
+rule "Recommend restaurants with vegetarian options"
+when 
+    $filter: RestaurantFilterDTO(isVegetarianFriendly != null)
+    $restaurant: Restaurant(isVegetarianFriendly == true)
+then
+    recommendations.add($restaurant);
+    insert($restaurant);
+end
+
+rule "Recommend restaurants allowing smoking"
+when 
+    $filter: RestaurantFilterDTO(isSmokerFriendly != null)
+    $restaurant: Restaurant(isSmokerFriendly == true)
+then
+    recommendations.add($restaurant);
+    insert($restaurant);
+end

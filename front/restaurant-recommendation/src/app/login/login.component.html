@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+   </head>
+   <body>
+    <div class="wrapper">
+      <div class="title">
+        Welcome back!
+      </div>
+      <form (ngSubmit)="onSubmit()">
+        <div class="field">
+          <input id="email" type="text" required [(ngModel)]="email" name="email">
+          <label>Email Address</label>
+        </div>
+        <div class="field">
+          <input id="password" type="password" required [(ngModel)]="password" name="password">
+          <label>Password</label>
+        </div>
+        <div class="field">
+          <input type="submit" value="Log-in">
+        </div>
+        <div class="signup-link">
+          Don't have an account? <a routerLink="/registration">Sign-up!</a>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

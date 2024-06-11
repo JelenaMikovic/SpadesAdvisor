@@ -1,0 +1,61 @@
+package cep;
+
+import com.ftn.sbnz.model.models.User;
+import com.ftn.sbnz.model.models.Review;
+import com.ftn.sbnz.model.models.Restaurant;
+import com.ftn.sbnz.model.models.CuisineType;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+global List<Restaurant> recommendationList;
+global List<Restaurant> allRestaurants;
+
+declare Review
+    @role(event)
+end
+
+rule "Detect multiple restaurant reviews within 7 days with same cuisine type"
+salience 10
+when
+    $user : User()
+    Number(intValue > 1) from accumulate(
+        Review(user.getId() == $user.getId()) over window:time(7d), count()
+    )
+    $reviews : ArrayList() from collect(
+        Review(user.getId() == $user.getId())
+    )
+    $cuisineMap : HashMap() from makeCuisineTypeMap($reviews)
+then
+    CuisineType $cuisineType = null;
+    for (Object object : $cuisineMap.entrySet()) {
+        Map.Entry<CuisineType, Integer> entry = (Map.Entry<CuisineType, Integer>) object;
+        if (entry.getValue() > 1) {
+            $cuisineType = entry.getKey();
+            break;
+        }
+    }
+    recommendationList.clear();
+    if ($cuisineType != null) {
+        for (Object object : allRestaurants) {
+            Restaurant restaurant = (Restaurant) object;
+            if (restaurant.getCuisineType().equals($cuisineType)) {
+                System.out.println("Restaurant " + restaurant.getName() + " recommended to user " + $user.getFirstName());
+                recommendationList.add(restaurant);
+            }
+        }
+    }
+end
+
+function HashMap<CuisineType, Integer> makeCuisineTypeMap(ArrayList list) {
+    HashMap<CuisineType, Integer> map = new HashMap<>();
+    for(Object o : list) {
+        Review review = (Review) o;
+        Restaurant restaurant = review.getRestaurant();
+        CuisineType cuisineType = restaurant.getCuisineType();
+        Integer count = map.getOrDefault(cuisineType, 0);
+        map.put(cuisineType, count + 1);
+    }
+    return map;
+}

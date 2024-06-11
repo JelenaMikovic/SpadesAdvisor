@@ -1,0 +1,38 @@
+
+h2{
+    color: black;
+    text-align: justify;
+    padding-top: 8px;
+    padding-left: 6px;
+}
+
+.restaurant-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .restaurant-card {
+    width: 300px;
+    margin: 15px;
+  }
+
+mat-card{
+    background-color: rgb(198, 201, 203);
+    box-shadow: 8px;
+}
+
+mat-card p{
+    padding: auto;
+    margin: -4px ;
+    color: rgb(68, 68, 68);
+  }
+
+.s{
+    font-weight: bold;
+}
+
+mat-card mat-icon{
+    color: rgb(68, 68, 68);
+    height: 22px;
+  }

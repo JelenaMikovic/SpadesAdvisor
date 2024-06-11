@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+   </head>
+   <body>
+    <div class="wrapper">
+      <div class="title">
+        Welcome!
+      </div>
+      <form (ngSubmit)="onSubmit()" #registrationForm="ngForm">
+        <div class="field">
+            <input type="text" name="firstName" [(ngModel)]="firstName" required>
+            <label>First Name</label>
+        </div>
+        <div class="field">
+            <input type="text" name="lastName" [(ngModel)]="lastName" required>
+            <label>Last Name</label>
+        </div>
+        <div class="field">
+          <input type="text" name="email" [(ngModel)]="email" required>
+          <label>Email Address</label>
+        </div>
+        <div class="field">
+          <input type="password" name="password" [(ngModel)]="password" required>
+          <label>Password</label>
+        </div>
+        <div class="field">
+          <input type="submit" value="Register" [disabled]="!registrationForm.form.valid">
+        </div>
+        <div class="signup-link">
+          Already have an account? <a routerLink="/login">Log-in!</a>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

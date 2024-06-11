@@ -1,0 +1,12 @@
+.nana {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+}
+
+.nana > * {
+    margin: 0 5px;
+}
