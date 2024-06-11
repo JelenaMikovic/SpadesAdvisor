@@ -11,11 +11,10 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
     
   - Istorija posecenih restorana: informacije o restoranu, ocena koju je korisnik dao
     
-  - Najpopularniji restorani: uzece se u obzir trenutno najpopularniji restorani na lokaciji korsinkia
-
 <h4>Izlazi iz sistema (outputs): </h4>
 
   - Restorani: preporuceni restorani na osnovu istorije i pretrage
+  - Najpopularniji restorani: uzece se u obzir trenutno najpopularniji restorani na osnovu template-a
 
 <h4>Popunjavanje baze:</h4>
 
@@ -27,9 +26,9 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
 
 <h4>Baza:</h4>
 
-  - Korisnici: ime, prezime, telefon, email, sifra, omiljeni restorani
+  - Korisnici: ime, prezime, email, sifra, omiljeni restorani
     
-  - Restorani: vrsta hrane, lokacija, cena, radno vreme
+  - Restorani: vrsta hrane, lokacija, cena, radno vreme, da li dozvoljavaju pusenje, da li imaju vegetarijenske opcije
     
   - Ocene: ocene korisnika odredjenog restorana
 
@@ -59,13 +58,8 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
 <h2>Pravila</h2>
 <h4>Osnovna pravila: </h4>
 
-  - Ako korisnik je na odredjenoj lokaciji, preporuke na osnovu te lokacije.
-  - Ako je korisnik pusac, preporuke restorana koji dozvoljavaju pusenje.
-  - Ako je korisnik vegitarijanac, preporuke restorana koji imaju vegatarijanska jela.
-
-<h4>Filter: </h4>
-  - Ako korisnik zeli odredjenu vrstu hrane, preporuke te vrste hrane.
   - Ako korisnik zeli do odredjene cene, preporuke restorana te cene.
+  - Ako korisnik zeli odredjenu vrstu hrane, preporuke te vrste hrane.
   - Ako korisnik zeli od odredjene srednje ocene, preporuke restorana minimum te ocene.
   - Ako korisnik zeli odredjenu lokaciju, preporuke na osnovu te lokacije.
   - Ako korisnik zeli mesto za pusace, preporuke restorana koji dozvoljavaju pusenje.
@@ -74,9 +68,9 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
 <h4>Forward chaining: </h4>
 
   - Preporuka na osnovu vrste restorana
-    1. Korisnik je ocenio restoran sa visokom ocenom, restoran ide na listu pozitivno ocenjenih restorana
-    2. Vrsta tog restorana se stavlja u listu vrsta restorana koje preferira korisnik
-    3. Na osnovu vrste se preporucuje restoran
+    1. Korisnik je ocenio restoran sa 5, restoran ide na listu visoko ocenjenih restorana
+    2. Vrsta hrane tog restorana se stavlja u listu vrsta restorana koje preferira korisnik
+    3. Na osnovu vrste se preporucuju restorani
   
   - Preporuka na osnovu cene
     1. Korisnik preferira restorane u određenom cenovnom rangu, restoran se dodaje u listu restorana u tom cenovnom rangu
@@ -84,9 +78,9 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
     3. Na osnovu cene se preporučuje restoran
   
   - Preporuka na osnovu lokacije
-    1. Korisnik je dao pozitivnu ocenu restoranu na odredjenoj lokaciji, restoran ide na listu restorana na toj lokaciji
-    2. Lokacija tog restorana se stavlja u listu lokacija koje korisnik preferira
-    3. Na osnovu lokacije se preporucuje restoran
+    1. Korisnik je posetio restoran, restoran ide na listu posecenih restorana
+    2. U slucaju da je ta lokacija posecena 3 ili vise puta lokacija tog restorana se stavlja u listu lokacija koje korisnik preferira
+    3. Na osnovu lokacije se preporucuju restorani
    
   - Preporuka na osnovu radnog vremena
     1. Korisnik preferira restorane koji su otvoreni kasno, restoran se dodaje na listu restorana koji rade do kasno.
@@ -101,8 +95,8 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
 
 <h4>Query: </h4>
 
-  - Izvestaj prikazuje koje vrste hrane korisnik najcesce posecuje.
-  - Izvestaj prikazuje korisnikove omiljene restorane.
+  - Izvestaj prikazuje broj puta koje je korisnik posetio po vrsti hrane.
+  - Izvestaj prikazuje restorane kojima je korisnik dao ocenu 5.
   - Izvestaj prikazuje koji cenovni rang korisnik najcesce bira.
   - Izvestaj prikazuje koje radno vreme korisnik najcesce bira.
 
@@ -116,9 +110,9 @@ Naš projekat za preporuku restorana fokusira se na pružanje preporuka restoran
 <h4>CEP: </h4>
 
   - Preporuka restorana na osnovu nedavnih poseta korisnika i preferirane vrste hrane
-    1. Korisnik je u poslednjih 7 dana posetio 2 ili više restorana
+    1. Korisnik je u poslednjih 7 dana posetio 2 ili više restorana iste vrste hrane
     2. Analizira se vrsta hrane koju je korisnik konzumirao tokom poseta restoranima.
-    3. Generiše se preporuka za restorane koji nude istu ili sličnu vrstu hrane kao što je konzumirana tokom nedavnih poseta korisnika.
+    3. Generiše se preporuka za restorane koji nude istu vrstu hrane kao što je konzumirana tokom nedavnih poseta korisnika.
 
   - Preporuka restorana na osnovu nedavnih ocena korisnika i preferirane cene
     1. Korisnik je u poslednjih 48 sati dao 1 ili više pozitivnih ocena restoranima.
