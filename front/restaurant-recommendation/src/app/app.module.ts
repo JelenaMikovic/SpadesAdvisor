@@ -25,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FilteredRestaurantsComponent } from './filtered-restaurants/filtered-restaurants.component';
 import { SearchedRestaurantsComponent } from './searched-restaurants/searched-restaurants.component';
 import { ReportsComponent } from './reports/reports.component';
+import { AdminTrendingComponent } from './admin-trending/admin-trending.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { ReportsComponent } from './reports/reports.component';
     FilterDialogComponent,
     FilteredRestaurantsComponent,
     SearchedRestaurantsComponent,
-    ReportsComponent
+    ReportsComponent,
+    AdminTrendingComponent
   ],
   imports: [
     BrowserModule,

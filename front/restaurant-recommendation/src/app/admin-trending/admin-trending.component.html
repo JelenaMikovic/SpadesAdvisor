@@ -1,0 +1,38 @@
+<div class="nana">
+<form (ngSubmit)="submitForm()" #filterForm="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Rating (1-5)</mat-label>
+      <input matInput type="number" step="0.1" min="1" max="5" [(ngModel)]="filterData.rating" name="rating" required>
+    </mat-form-field>
+
+    <br>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Number of Reviews</mat-label>
+      <input matInput type="number" min="0" [(ngModel)]="filterData.numReviews" name="numReviews" required>
+    </mat-form-field>
+  
+    <br>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Type of Cuisine</mat-label>
+      <mat-select [(ngModel)]="filterData.cuisineType" name="cuisineType" required>
+        <mat-option value="ITALIAN">Italian</mat-option>
+        <mat-option value="CHINESE">Chinese</mat-option>
+        <mat-option value="MEXICAN">Mexican</mat-option>
+        <mat-option value="AMERICAN">American</mat-option>
+        <mat-option value="FRENCH">French</mat-option>
+        <mat-option value="JAPANESE">Japanese</mat-option>
+        <mat-option value="INDIAN">Indian</mat-option>
+        <mat-option value="THAI">Thai</mat-option>
+        <mat-option value="GREEK">Greek</mat-option>
+        <mat-option value="SERBIAN">Serbian</mat-option>
+        <mat-option value="OTHER">Other</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <br>
+  
+    <button mat-raised-button color="primary" type="submit">Apply Filters</button>
+  </form>  
+  </div>
