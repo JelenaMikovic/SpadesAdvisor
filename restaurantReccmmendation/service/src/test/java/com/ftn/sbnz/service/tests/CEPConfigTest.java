@@ -1,12 +1,15 @@
 package com.ftn.sbnz.service.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import org.drools.core.time.SessionPseudoClock;
 import org.junit.Test;
 // import org.kie.api.KieServices;
 // import org.kie.api.runtime.KieContainer;
@@ -155,4 +158,76 @@ public class CEPConfigTest {
         assertTrue(recommendedRestaurants.contains(restaurant2));
     }
 
+    @Test
+    public void test3() {
+        // Load KieServices
+        KieServices kieServices = KieServices.Factory.get();
+
+        // Load KieContainer from classpath
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+
+        // Create a new KieSession
+        KieSession kSession = kieContainer.newKieSession("cepKsession");
+        
+        List<Restaurant> recommendations = new ArrayList<>();
+        List<Restaurant> allRestaurants = new ArrayList<>();
+
+
+        kSession.setGlobal("recommendationList", recommendations);
+        
+        SessionPseudoClock clock = kSession.getSessionClock();
+
+        // Create test data
+        User user = new User();
+        user.setFirstName("John");
+
+        Restaurant restaurant1 = new Restaurant();
+        restaurant1.setName("Italian Bistro");
+        restaurant1.setCuisineType(CuisineType.ITALIAN);
+
+        Restaurant restaurant2 = new Restaurant();
+        restaurant2.setName("Sushi Place");
+        restaurant2.setCuisineType(CuisineType.ITALIAN);
+
+        Restaurant restaurant3 = new Restaurant();
+        restaurant3.setName("Sushi sasa");
+        restaurant3.setCuisineType(CuisineType.ITALIAN);
+
+        // Add restaurants to global list
+        kSession.insert(user);
+        allRestaurants.add(restaurant1);
+        allRestaurants.add(restaurant2);
+        allRestaurants.add(restaurant3);
+
+        kSession.setGlobal("allRestaurants", allRestaurants);
+
+
+        // Insert reviews into the session
+        Review review1 = new Review();
+        review1.setUser(user);
+        review1.setRestaurant(restaurant1);
+        review1.setRating(3);
+
+        Review review2 = new Review();
+        review2.setUser(user);
+        review2.setRestaurant(restaurant2);
+        review2.setRating(4);
+
+        kSession.insert(review1);
+                // Advance the clock by 1 day (ensure within 7 days window)
+        clock.advanceTime(1, TimeUnit.DAYS);
+        kSession.insert(review2);
+
+        // Fire all rules
+        kSession.fireAllRules();
+
+        // Check if the recommendation list contains the expected restaurant
+        assertTrue(recommendations.contains(restaurant3));
+        assertEquals(3, recommendations.size());
+
+        // Output the recommendations for visual inspection
+        recommendations.forEach(restaurant ->
+            System.out.println("Recommended Restaurant: " + restaurant.getName())
+        );
+    }
 }
