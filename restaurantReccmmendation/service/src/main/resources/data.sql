@@ -65,5 +65,5 @@ INSERT INTO Restaurants (name, cuisine_type, location, price, opening_hour, clos
 ('Balkan Grillhouse', 9, 'Bulevar Cara Lazara 37, Liman 2, Novi Sad', 2100.00, '11:00', '22:00', true, true, false),
 ('Serbian Grillhouse', 9, 'Bulevar Oslobođenja 3, Stari Grad, Novi Sad', 1800.00, '11:00', '22:00', true, true, false);
 
-CREATE ALIAS GenerateReviews FOR "GenerateReviews.generate";
-CALL GenerateReviews();
+-- CREATE ALIAS GenerateReviews FOR "GenerateReviews.generate";
+-- CALL GenerateReviews();

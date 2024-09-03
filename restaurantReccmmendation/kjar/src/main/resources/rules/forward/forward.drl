@@ -98,3 +98,86 @@ then
         System.out.println("Restaurant " + $restaurant.getName() + " recommended to user " + $user.getFirstName());
     }
 end
+
+// DANILO FWD 2
+rule "Add restaurant to price range list"
+when
+    $review : Review()
+    $user : User(this == $review.getUser())
+    $restaurant : Restaurant(this == $review.getRestaurant())
+    $priceRange : String() from $restaurant.getPriceRange()
+    not (String(this == $priceRange) from $user.getPreferredPriceRanges())
+then
+    // Add restaurant to the price range list
+    List<Restaurant> restaurantList = priceRangeRestaurants.getOrDefault($priceRange, new ArrayList<>());
+    restaurantList.add($restaurant);
+    priceRangeRestaurants.put($priceRange, restaurantList);
+    update($user);
+    System.out.println("Restaurant " + $restaurant.getName() + " added to price range list of user " + $user.getFirstName());
+end
+
+
+rule "Add price range to preferred list"
+when
+    $user : User()
+    $restaurant : Restaurant()
+    $priceRange : String() from $restaurant.getPriceRange()
+    not(String(this == $priceRange) from $user.getPreferredPriceRanges())
+then
+    // Add price range to the user's preferred price ranges
+    if (!$user.getPreferredPriceRanges().contains($priceRange)) {
+        $user.getPreferredPriceRanges().add($priceRange);
+        update($user);
+        System.out.println("Price range " + $priceRange + " added to preferred list of user " + $user.getFirstName());
+    }
+end
+
+
+rule "Recommend restaurant based on preferred price ranges"
+when
+    $user : User(preferredPriceRanges.size() > 0)
+    $restaurant : Restaurant(priceRange memberOf $user.getPreferredPriceRanges())
+then
+    if (!recommendedRestaurantsPrice.contains($restaurant)) {
+        recommendedRestaurantsPrice.add($restaurant);
+        System.out.println("Restaurant " + $restaurant.getName() + " recommended to user " + $user.getFirstName());
+    }
+end
+
+
+// DANILO FWD 1
+rule "Add restaurant to late closing list"
+when
+    $restaurant : Restaurant(openingHours.endTime after "22:00") // Assuming endTime is a string, adapt as needed
+    $user : User()
+    not (Restaurant(this == $restaurant) from $user.getLateClosingRestaurants())
+then
+    $user.getLateClosingRestaurants().add($restaurant);
+    update($user);
+    System.out.println("Restaurant " + $restaurant.getName() + " added to late closing list of user " + $user.getFirstName());
+end
+
+rule "Add closing time to preferred list"
+when
+    $user : User()
+    $restaurant : Restaurant()
+    $closingTime : String() from $restaurant.getOpeningHours().getEndTime() // Adapt getter method as needed
+    not(String(this == $closingTime) from $user.getPreferredClosingTimes())
+then
+    if (!$user.getPreferredClosingTimes().contains($closingTime)) {
+        $user.getPreferredClosingTimes().add($closingTime);
+        update($user);
+        System.out.println("Closing time " + $closingTime + " added to preferred list of user " + $user.getFirstName());
+    }
+end
+
+rule "Recommend restaurant based on preferred closing times"
+when
+    $user : User(preferredClosingTimes.size() > 0)
+    $restaurant : Restaurant(closingTime memberOf $user.getPreferredClosingTimes()) // Adapt getter method as needed
+then
+    if (!recommendedRestaurantsByClosingTime.contains($restaurant)) {
+        recommendedRestaurantsByClosingTime.add($restaurant);
+        System.out.println("Restaurant " + $restaurant.getName() + " recommended to user " + $user.getFirstName());
+    }
+end

@@ -59,3 +59,42 @@ function HashMap<CuisineType, Integer> makeCuisineTypeMap(ArrayList list) {
     }
     return map;
 }
+
+
+rule "Detect recent positive reviews and recommend restaurants based on preferred price"
+salience 10
+when
+    $user : User()
+    Number(intValue > 0) from accumulate(
+        Review(user.getId() == $user.getId() && review.getRating() > 3) over window:time(48h), count()
+    )
+    $reviews : ArrayList() from collect(
+        Review(user.getId() == $user.getId() && review.getRating() > 3)
+    )
+    $priceMap : HashMap() from makePriceRangeMap($reviews)
+    $preferredPriceRange : PriceRange = $user.getPreferredPriceRange()
+then
+    // Clear the recommendation list
+    recommendationList.clear();
+
+    // Iterate through all restaurants and add those matching the preferred price range to the recommendation list
+    for (Object object : allRestaurants) {
+        Restaurant restaurant = (Restaurant) object;
+        if (restaurant.getPriceRange().equals($preferredPriceRange)) {
+            System.out.println("Restaurant " + restaurant.getName() + " recommended to user " + $user.getFirstName());
+            recommendationList.add(restaurant);
+        }
+    }
+end
+
+function HashMap<PriceRange, Integer> makePriceRangeMap(ArrayList list) {
+    HashMap<PriceRange, Integer> map = new HashMap<>();
+    for(Object o : list) {
+        Review review = (Review) o;
+        Restaurant restaurant = review.getRestaurant();
+        PriceRange priceRange = restaurant.getPriceRange();
+        Integer count = map.getOrDefault(priceRange, 0);
+        map.put(priceRange, count + 1);
+    }
+    return map;
+}
