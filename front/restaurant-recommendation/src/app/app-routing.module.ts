@@ -7,6 +7,9 @@ import { FilteredRestaurantsComponent } from './filtered-restaurants/filtered-re
 import { SearchedRestaurantsComponent } from './searched-restaurants/searched-restaurants.component';
 import { ReportsComponent } from './reports/reports.component';
 import { AdminTrendingComponent } from './admin-trending/admin-trending.component';
+import {RestaurantDetailsComponent} from "./restaurant-details/restaurant-details.component";
+import {ProfileComponent} from "./profile/profile.component";
+import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -16,6 +19,9 @@ const routes: Routes = [
   { path: 'searched-restaurants', component: SearchedRestaurantsComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'template', component: AdminTrendingComponent },
+  { path: 'restaurant-details', component: RestaurantDetailsComponent},
+  { path: 'profile', component: ProfileComponent},
+  { path: 'edit-profile', component: EditProfileComponent}
 ];
 
 @NgModule({

@@ -1,0 +1,9 @@
+<div *ngIf="restaurant" class="restaurant-card">
+  <h2 class="card-title">{{ restaurant.name }}</h2>
+  <p class="card-detail">Location: {{ restaurant.location }}</p>
+  <p class="card-detail">Cuisine Type: {{ restaurant.cuisine_type }}</p>
+  <p class="card-detail">Price: {{ restaurant.price | currency }}</p>
+  <p class="card-detail">Working Hours: {{ restaurant.opening_hour }} - {{ restaurant.closing_hour }}</p>
+  <p class="card-detail">Vegetarian Friendly: {{ restaurant.is_vegetarian_friendly ? 'Yes' : 'No' }}</p>
+  <p class="card-detail">Smoking Allowed: {{ restaurant.is_smoker_friendly ? 'Yes' : 'No' }}</p>
+</div>

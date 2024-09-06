@@ -26,6 +26,9 @@ import { FilteredRestaurantsComponent } from './filtered-restaurants/filtered-re
 import { SearchedRestaurantsComponent } from './searched-restaurants/searched-restaurants.component';
 import { ReportsComponent } from './reports/reports.component';
 import { AdminTrendingComponent } from './admin-trending/admin-trending.component';
+import { RestaurantDetailsComponent } from './restaurant-details/restaurant-details.component';
+import { ProfileComponent } from './profile/profile.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 
 @NgModule({
@@ -39,7 +42,10 @@ import { AdminTrendingComponent } from './admin-trending/admin-trending.componen
     FilteredRestaurantsComponent,
     SearchedRestaurantsComponent,
     ReportsComponent,
-    AdminTrendingComponent
+    AdminTrendingComponent,
+    RestaurantDetailsComponent,
+    ProfileComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,

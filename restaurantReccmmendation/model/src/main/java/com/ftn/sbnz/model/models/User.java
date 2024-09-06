@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+//import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class User {
     private List<String> preferredLocations;
     @ManyToMany
     private List<Restaurant> topPicks;
+
 
 
     public User(long id, String firstName, String lastName, String email, String password, boolean isAdmin) {
