@@ -65,5 +65,28 @@ INSERT INTO Restaurants (name, cuisine_type, location, price, opening_hour, clos
 ('Balkan Grillhouse', 9, 'Bulevar Cara Lazara 37, Liman 2, Novi Sad', 2100.00, '11:00', '22:00', true, true, false),
 ('Serbian Grillhouse', 9, 'Bulevar Oslobođenja 3, Stari Grad, Novi Sad', 1800.00, '11:00', '22:00', true, true, false);
 
+INSERT INTO USERS_VISITED_RESTAURANTS (USER_ID , VISITED_RESTAURANTS_ID) VALUES
+(1, 3),  -- John Doe posetio El Mariachi
+(2, 5),  -- Jane Doe posetila Le Petit Bistro
+(2, 1), -- Jane Doe Great Wall
+(3, 7),  -- Alice Smith posetila Taj Mahal
+(4, 2),  -- Michael Johnson posetio Great Wall
+(5, 8),  -- Emily Williams posetila Bangkok Spice
+(6, 6),  -- Daniel Brown posetio Sakura Sushi
+(7, 4),  -- Sophia Jones posetila Uncle Sams Diner
+(8, 10), -- William Garcia posetio Balkan Grill
+(9, 9),  -- Olivia Martinez posetila Olive Tree Taverna
+(10, 1), -- Alexander Hernandez posetio Gusto Italiano
+(11, 11), -- Isabella Lopez posetila La Piazza
+(12, 14), -- Ethan Gonzalez posetio Route 66 Diner
+(13, 12), -- Ava Wilson posetila Golden Dragon
+(14, 16), -- Liam Anderson posetio Mumbai Delight
+(15, 17), -- Mia Thomas posetila Thai Orchid
+(16, 19), -- James Taylor posetio Balkan Delight
+(17, 20), -- Emma Moore posetila Pasta Paradise
+(18, 15), -- Benjamin Jackson posetio Le Croissant
+(19, 18), -- Amelia White posetila Athenas Tavern
+(20, 13); -- Lucas Harris posetio El Camino
+
 -- CREATE ALIAS GenerateReviews FOR "GenerateReviews.generate";
 -- CALL GenerateReviews();

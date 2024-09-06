@@ -104,7 +104,7 @@ public class RestaurantService implements IRestaurantService{
 
     @Override
     public Boolean addRestaurant(RestaurantDTO restaurantDTO) {
-                // Kreiranje instance restorana na osnovu DTO objekta
+        // Kreiranje instance restorana na osnovu DTO objekta
         Restaurant restaurant = new Restaurant();
         restaurant.setName(restaurantDTO.getName());
         restaurant.setCuisineType(restaurantDTO.getCuisineType());
@@ -126,6 +126,8 @@ public class RestaurantService implements IRestaurantService{
     public ReccomendationsDTO getReccomendedRestaurants(Long userId) {
         List<Restaurant> recommendedRestaurantsRating = new ArrayList<>();
         List<Restaurant> recommendedRestaurantsLocation = new ArrayList<>();
+        List<Restaurant> recommendedRestaurantsPrice = new ArrayList<>();  // Nova lista za preporuke po ceni
+        //List<Restaurant> recommendedRestaurantsWorkingHours = new ArrayList<>();  // Nova lista za radno vreme
         Map<String, Integer> locationVisitCounts = new HashMap<>();
 
         KieSession kieSession = kieContainer.newKieSession("forwardKsession");
@@ -133,6 +135,9 @@ public class RestaurantService implements IRestaurantService{
         kieSession.setGlobal("recommendedRestaurantsLocation", recommendedRestaurantsLocation);
         kieSession.setGlobal("locationVisitCounts", locationVisitCounts);
         kieSession.setGlobal("recommendedRestaurantsRating", recommendedRestaurantsRating);
+        kieSession.setGlobal("recommendedRestaurantsPrice", recommendedRestaurantsPrice);  // Postavi globalnu za cene
+        //kieSession.setGlobal("recommendedRestaurantsWorkingHours", recommendedRestaurantsWorkingHours);  // Postavi globalnu za radno vreme
+
 
         
         User user = userRepository.findById(userId).get();
@@ -164,6 +169,22 @@ public class RestaurantService implements IRestaurantService{
             restaurants.add(r);
         }
         dto.setRecommendedRestaurantsRating(restaurants);
+
+        // Dodaj restorane preporučene po ceni
+        restaurants = new ArrayList<>();
+        for (Restaurant r : recommendedRestaurantsPrice) {
+            r.setReviews(null);
+            restaurants.add(r);
+        }
+        dto.setRecommendedRestaurantsPrice(restaurants);   
+        
+        
+        // restaurants = new ArrayList<>();
+        // for (Restaurant r : recommendedRestaurantsWorkingHours) {
+        //     r.setReviews(null);
+        //     restaurants.add(r);
+        // }
+        // dto.setRecommendedRestaurantsWorkingHours(restaurants);
 
         return dto;
     }

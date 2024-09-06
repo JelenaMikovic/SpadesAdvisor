@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {RestaurantDataService} from "../restaurant-data.service";
+import {AppRoutingModule} from "../app-routing.module";
 
 @Component({
   selector: 'app-home-page',
@@ -28,23 +30,28 @@ export class HomePageComponent {
   restaurantsRating: any[] = [];
   restaurantsLocation: any[] = [];
   topPicks: any[] = [];
+  restaurantsPrice: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private restaurantDataService: RestaurantDataService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.getRecommended();
   }
 
+
   getRecommended() {
     this.http.get<any>('http://localhost:8080/api/restaurants/reccomended', { withCredentials: true })
       .subscribe(
         (data: any) => {
           console.log(data);
-          this.restaurantsRating = data.recommendedRestaurantsRating || [];     
-          this.restaurantsLocation = data.recommendedRestaurantsLocation || [];               
+          this.restaurantsRating = data.recommendedRestaurantsRating || [];
+          this.restaurantsLocation = data.recommendedRestaurantsLocation || [];
+          this.restaurantsPrice = data.recommendedRestaurantsPrice || [];
         },
         (error: any) => {
           console.error('Error fetching recommended restaurants', error);
@@ -70,5 +77,10 @@ export class HomePageComponent {
           console.error('Error fetching recommended restaurants', error);
         }
       );
+  }
+
+  onCardClick(restaurant: any) {
+    this.restaurantDataService.setRestaurantData(restaurant);
+    this.router.navigate(['/restaurant-details']); // Adjust the route if necessary
   }
 }

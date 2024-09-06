@@ -1,0 +1,25 @@
+.restaurant-card {
+  max-width: 600px; /* Maksimalna širina kartice */
+  margin: 20px auto; /* Centriranje kartice horizontalno */
+  padding: 20px;
+  border-radius: 10px; /* Blage ivice */
+  background-color: #f8f9fa; /* Svetlo siva pozadina */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Suptilan senčenje */
+  color: #333; /* Tamna boja teksta */
+}
+
+.card-title {
+  font-size: 24px; /* Veći font za naziv restorana */
+  font-weight: bold; /* Podebljani font za naziv restorana */
+  color: #343a40; /* Tamnija boja za naziv restorana */
+  margin-bottom: 20px;
+}
+
+.card-detail {
+  font-size: 16px; /* Standardna veličina fonta za detalje */
+  margin: 10px 0; /* Razmak između redova */
+}
+
+.card-detail strong {
+  color: #495057; /* Tamnija boja za naslove detalja */
+}

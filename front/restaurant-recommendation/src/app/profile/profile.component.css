@@ -1,0 +1,41 @@
+.profile-card {
+  max-width: 600px; /* Maksimalna širina kartice */
+  margin: 20px auto; /* Centriranje kartice horizontalno */
+  padding: 20px;
+  border-radius: 10px; /* Blage ivice */
+  background-color: #f8f9fa; /* Svetlo siva pozadina */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Suptilan senčenje */
+  color: #333; /* Tamna boja teksta */
+  position: relative; /* Dodaj pozicioniranje za sadržaj */
+}
+
+.mat-card-header {
+  position: relative; /* Postavljanje u odnosu na karticu */
+  display: flex; /* Flexbox za raspored */
+  align-items: center; /* Poravnanje po sredini */
+  justify-content: space-between; /* Raspoređivanje prostora između naslova i dugmeta */
+}
+
+.card-title {
+  font-size: 24px; /* Veći font za naziv */
+  font-weight: bold; /* Podebljani font za naziv */
+  color: #343a40; /* Tamnija boja za naziv */
+  margin: 0;
+}
+
+.edit-button {
+  color: #007bff; /* Plava boja dugmeta */
+  position: absolute; /* Absolutno pozicioniranje unutar zaglavlja */
+  top: 0;
+  right: 0;
+  margin: 16px; /* Dodaje razmak od vrha i desne strane kartice */
+}
+
+.card-detail {
+  font-size: 16px; /* Standardna veličina fonta za detalje */
+  margin: 10px 0; /* Razmak između redova */
+}
+
+.card-detail strong {
+  color: #495057; /* Tamnija boja za naslove detalja */
+}
