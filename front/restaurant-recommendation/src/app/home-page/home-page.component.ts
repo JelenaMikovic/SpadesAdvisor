@@ -31,6 +31,7 @@ export class HomePageComponent {
   restaurantsLocation: any[] = [];
   topPicks: any[] = [];
   restaurantsPrice: any[] = [];
+  reviewTopPicks: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -75,6 +76,16 @@ export class HomePageComponent {
         },
         (error: any) => {
           console.error('Error fetching recommended restaurants', error);
+        }
+      );
+    this.http.get<any>('http://localhost:8080/api/restaurants/review-top-picks')
+      .subscribe(
+        (data: any) => {
+          console.log(data);
+          this.reviewTopPicks = data;
+        },
+        (error: any) => {
+          console.error('Error fetching review recommended restaurants', error);
         }
       );
   }

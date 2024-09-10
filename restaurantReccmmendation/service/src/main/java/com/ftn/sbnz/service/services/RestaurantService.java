@@ -268,4 +268,16 @@ public class RestaurantService implements IRestaurantService{
 		return kieHelper.build().newKieSession();
 	}
 
+    @Override
+    public List<Restaurant> getReviewTopPicks(Long attribute) {
+        User user = userRepository.findById(attribute).get();
+        List<Restaurant> restaurants = new ArrayList<>();
+        for(Restaurant r: user.getReviewBasedPicks()){
+            //r.setReviews(null);
+            restaurants.add(r);
+        }
+        return restaurants;
+        
+    }
+
 }

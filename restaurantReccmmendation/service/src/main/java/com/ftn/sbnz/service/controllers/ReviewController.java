@@ -28,7 +28,6 @@ public class ReviewController {
 
 	@PostMapping("/newReview")
 	public Boolean addReview(@RequestBody ReviewDTO reviewDTO, @SessionAttribute("userId") Long userId){
-		// TODO pozovi servis za dodavanje recenzije
 		return reviewService.addReview(reviewDTO, userId);
 	}
 }

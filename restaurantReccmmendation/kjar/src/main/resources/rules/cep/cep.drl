@@ -11,6 +11,8 @@ import java.util.Map;
 
 global List<Restaurant> recommendationList;
 global List<Restaurant> allRestaurants;
+global List<Restaurant> positiveReviewRecommendations;
+
 
 declare Review
     @role(event)
@@ -61,42 +63,42 @@ function HashMap<CuisineType, Integer> makeCuisineTypeMap(ArrayList list) {
 }
 
 
+rule "Recommend restaurants based on recent positive reviews and preferred price"
+salience 10
+when
+    // Dohvatanje korisnika
+    $user : User()
 
-// CEP DANILO
-// rule "Detect recent positive reviews and recommend restaurants based on preferred price"
-// salience 10
-// when
-//     $user : User()
-//     Number(intValue > 0) from accumulate(
-//         Review(user.getId() == $user.getId() && review.getRating() > 3) over window:time(48h), count()
-//     )
-//     $reviews : ArrayList() from collect(
-//         Review(user.getId() == $user.getId() && review.getRating() > 3)
-//     )
-//     $priceMap : HashMap() from makePriceRangeMap($reviews)
-//     $preferredPriceRange : PriceRange = $user.getPreferredPriceRange()
-// then
-//     // Clear the recommendation list
-//     recommendationList.clear();
+    // Akumuliranje broja pozitivnih recenzija (ocena > 3) u poslednjih 48 sati
+    Number(intValue > 0) from accumulate(
+        Review(user.getId() == $user.getId() && rating > 3) over window:time(48h), count()
+    )
 
-//     // Iterate through all restaurants and add those matching the preferred price range to the recommendation list
-//     for (Object object : allRestaurants) {
-//         Restaurant restaurant = (Restaurant) object;
-//         if (restaurant.getPriceRange().equals($preferredPriceRange)) {
-//             System.out.println("Restaurant " + restaurant.getName() + " recommended to user " + $user.getFirstName());
-//             recommendationList.add(restaurant);
-//         }
-//     }
-// end
+    // Prikupljanje pozitivnih recenzija u poslednjih 48 sati
+    $positiveReviews : List() from collect(
+        Review(user.getId() == $user.getId() && rating > 3) over window:time(48h)
+    )
 
-// function HashMap<PriceRange, Integer> makePriceRangeMap(ArrayList list) {
-//     HashMap<PriceRange, Integer> map = new HashMap<>();
-//     for(Object o : list) {
-//         Review review = (Review) o;
-//         Restaurant restaurant = review.getRestaurant();
-//         PriceRange priceRange = restaurant.getPriceRange();
-//         Integer count = map.getOrDefault(priceRange, 0);
-//         map.put(priceRange, count + 1);
-//     }
-//     return map;
-// }
+    // Akumulacija prosečne cene restorana iz recenzija
+    $averagePrice : Double() from accumulate(
+        Review(restaurant: Restaurant, user.getId() == $user.getId() && rating > 3) over window:time(48h),
+        average(restaurant.getPrice())
+    )
+then
+    // Postavljanje preferiranog cenovnog opsega: prosek - 200 do prosek + 100
+    double lowerBound = $averagePrice - 200;
+    double upperBound = $averagePrice + 100;
+
+    // Brisanje stare liste preporuka
+    positiveReviewRecommendations.clear();
+
+    // Preporuka svih restorana koji ispunjavaju uslove za cenu
+    for (Object object : allRestaurants) {
+        Restaurant restaurant = (Restaurant) object;
+        // Proveri da li restoran nije već dodat na listu preporuka
+        if (restaurant.getPrice() >= lowerBound && restaurant.getPrice() <= upperBound) {
+            System.out.println("Restaurant " + restaurant.getName() + " (no reviews) recommended to user " + $user.getFirstName());
+            positiveReviewRecommendations.add(restaurant);
+        }
+    }
+end
