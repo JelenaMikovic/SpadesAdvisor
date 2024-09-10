@@ -26,5 +26,7 @@ public interface IRestaurantService {
 
     List<Restaurant> getTrendning();
 
+    List<Restaurant> getReviewTopPicks(Long attribute);
+
     Boolean addTemplate(AdminSetting adminSetting, Long userId);
 }

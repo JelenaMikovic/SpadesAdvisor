@@ -50,8 +50,22 @@ public class User {
     private List<String> preferredLocations;
     @ManyToMany
     private List<Restaurant> topPicks;
+    @ManyToMany
+    private List<Restaurant> reviewBasedPicks;
 
 
+
+    public void setFavoriteRestaurants(List<Restaurant> favoriteRestaurants) {
+        this.favoriteRestaurants = favoriteRestaurants;
+    }
+
+    public List<Restaurant> getReviewBasedPicks() {
+        return reviewBasedPicks;
+    }
+
+    public void setReviewBasedPicks(List<Restaurant> reviewBasedPicks) {
+        this.reviewBasedPicks = reviewBasedPicks;
+    }
 
     public User(long id, String firstName, String lastName, String email, String password, boolean isAdmin) {
         this.id = id;
@@ -66,6 +80,7 @@ public class User {
         this.visitedRestaurants = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
         this.topPicks = new ArrayList<>();
+        this.reviewBasedPicks = new ArrayList<>();
     }
 
     public User() {
@@ -74,6 +89,8 @@ public class User {
         this.positivelyRatedRestaurants = new ArrayList<>();
         this.visitedRestaurants = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
+        this.reviewBasedPicks = new ArrayList<>();
+
     }
 
     public void addFavoriteRestaurant(Restaurant restaurant) {

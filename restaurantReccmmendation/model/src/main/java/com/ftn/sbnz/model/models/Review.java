@@ -1,5 +1,7 @@
 package com.ftn.sbnz.model.models;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,16 +23,19 @@ public class Review {
     private Restaurant restaurant;
     @Column
     private int rating;
+    //@Column(name = "created_at", nullable = false)
+    //private LocalDateTime createdAt;
 
     public Review(long id, User user, Restaurant restaurant, int rating) {
         this.id = id;
         this.user = user;
         this.restaurant = restaurant;
         this.rating = rating;
+        //this.createdAt = LocalDateTime.now();
     }
 
     public Review(){
-        
+        //this.createdAt = LocalDateTime.now();
     }
 
     // Getters

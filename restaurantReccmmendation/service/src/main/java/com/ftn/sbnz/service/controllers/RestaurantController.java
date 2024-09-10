@@ -59,6 +59,11 @@ public class RestaurantController {
         return restaurantService.getTopPicks((Long) session.getAttribute("userId"));
     }
 
+    @GetMapping("/review-top-picks")
+    public List<Restaurant> getReviewTopPicks(HttpSession session){
+        return restaurantService.getReviewTopPicks((Long) session.getAttribute("userId"));
+    }
+
     @GetMapping("/trendning")
     public List<Restaurant> getTrendning() {
         return restaurantService.getTrendning();

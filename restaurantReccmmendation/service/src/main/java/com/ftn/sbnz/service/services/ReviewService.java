@@ -39,7 +39,9 @@ public class ReviewService implements IReviewService{
     @Override
     public Boolean addReview(ReviewDTO reviewDTO, Long userId) {
         List<Restaurant> recommendationList = new ArrayList<>();
+        List<Restaurant> positiveReviewRecommendations = new ArrayList<>();
         kieSession.setGlobal("recommendationList", recommendationList);
+        kieSession.setGlobal("positiveReviewRecommendations", positiveReviewRecommendations);
         kieSession.setGlobal("allRestaurants", this.restaurantRepository.findAll());
                 // Pronalaženje restorana na osnovu ID-a iz reviewDTO
         Optional<Restaurant> restaurantOptional = restaurantRepository.findById(reviewDTO.getRestaurantId());
@@ -71,6 +73,9 @@ public class ReviewService implements IReviewService{
 
         System.out.println(recommendationList.size());
         user.setTopPicks(recommendationList);
+
+        System.out.println("POSITIVE REVIEW RECC SIZE:" + positiveReviewRecommendations.size());
+        user.setReviewBasedPicks(positiveReviewRecommendations);
         userRepository.save(user);
 
         return true;

@@ -1,6 +1,7 @@
 package com.ftn.sbnz.service.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
@@ -18,6 +19,8 @@ import org.kie.api.KieServices;
 import org.kie.api.builder.KieFileSystem;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.KieSessionConfiguration;
+import org.kie.api.runtime.conf.ClockTypeOption;
 
 import com.ftn.sbnz.model.models.AdminSetting;
 import com.ftn.sbnz.model.models.CuisineType;
@@ -231,6 +234,261 @@ public class CEPConfigTest {
         recommendations.forEach(restaurant ->
             System.out.println("Recommended Restaurant: " + restaurant.getName())
         );
+    }
+
+
+    //CEP 2 TESTOVI
+
+    @Test
+    public void testOnlyPositiveReviewedRestaurantsWithinPriceRange() {
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+        KieSession kieSession = kieContainer.newKieSession("forwardKsession");
+
+        List<Restaurant> positiveReviewRecommendations = new ArrayList<>();
+        kieSession.setGlobal("positiveReviewRecommendations", positiveReviewRecommendations);
+
+        List<Restaurant> allRestaurants = new ArrayList<>();
+        kieSession.setGlobal("allRestaurants", allRestaurants);
+
+        User user = new User();
+        user.setFirstName("John");
+
+        Restaurant restaurant1 = new Restaurant();
+        restaurant1.setName("Italian Bistro");
+        restaurant1.setPrice(500);
+
+        Restaurant restaurant2 = new Restaurant();
+        restaurant2.setName("Sushi Place");
+        restaurant2.setPrice(450);
+
+        Restaurant restaurant3 = new Restaurant();
+        restaurant3.setName("Burger Joint");
+        restaurant3.setPrice(700);
+
+
+        allRestaurants.add(restaurant1);
+        allRestaurants.add(restaurant2);
+        allRestaurants.add(restaurant3);
+
+        Review review1 = new Review();
+        review1.setRestaurant(restaurant1);
+        review1.setUser(user);
+        review1.setRating(5);
+
+        Review review2 = new Review();
+        review2.setRestaurant(restaurant2);
+        review2.setUser(user);
+        review2.setRating(4);
+
+        Review review3 = new Review();
+        review3.setRestaurant(restaurant3);
+        review3.setUser(user);
+        review3.setRating(4);
+
+        kieSession.insert(user);
+        kieSession.insert(review1);
+        kieSession.insert(review2);
+        kieSession.insert(review3);
+
+        kieSession.fireAllRules();
+
+        assertTrue(positiveReviewRecommendations.contains(restaurant1));
+        assertTrue(positiveReviewRecommendations.contains(restaurant2));
+        assertFalse(positiveReviewRecommendations.contains(restaurant3)); // Should not be included
+        assertEquals(2, positiveReviewRecommendations.size());
+    }
+
+    @Test
+    public void testPositiveReviewOutsidePriceRangeNotIncluded() {
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+        KieSession kieSession = kieContainer.newKieSession("forwardKsession");
+    
+        List<Restaurant> positiveReviewRecommendations = new ArrayList<>();
+        kieSession.setGlobal("positiveReviewRecommendations", positiveReviewRecommendations);
+    
+        List<Restaurant> allRestaurants = new ArrayList<>();
+        kieSession.setGlobal("allRestaurants", allRestaurants);
+    
+        User user = new User();
+        user.setFirstName("John");
+    
+        // Kreiraj restoran sa cenom van opsega
+        Restaurant restaurant1 = new Restaurant();
+        restaurant1.setName("Expensive Place");
+        restaurant1.setPrice(1200); // outside price range
+    
+        allRestaurants.add(restaurant1);
+    
+        // Pozitivna recenzija za restoran van opsega
+        Review review1 = new Review();
+        review1.setUser(user);
+        review1.setRestaurant(restaurant1);
+        review1.setRating(5); // Positive review
+    
+        kieSession.insert(user);
+        kieSession.insert(review1);
+    
+        kieSession.fireAllRules();
+    
+        assertFalse(positiveReviewRecommendations.contains(restaurant1)); // Should not be included
+        assertEquals(0, positiveReviewRecommendations.size());
+    }
+    
+    @Test
+    public void testNoPositiveReviewsNoRecommendations() {
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+        KieSession kieSession = kieContainer.newKieSession("forwardKsession");
+    
+        List<Restaurant> positiveReviewRecommendations = new ArrayList<>();
+        kieSession.setGlobal("positiveReviewRecommendations", positiveReviewRecommendations);
+    
+        List<Restaurant> allRestaurants = new ArrayList<>();
+        kieSession.setGlobal("allRestaurants", allRestaurants);
+    
+        User user = new User();
+        user.setFirstName("John");
+    
+        Restaurant restaurant1 = new Restaurant();
+        restaurant1.setName("Italian Bistro");
+        restaurant1.setPrice(500);
+    
+        Restaurant restaurant2 = new Restaurant();
+        restaurant2.setName("Sushi Place");
+        restaurant2.setPrice(450);
+    
+        allRestaurants.add(restaurant1);
+        allRestaurants.add(restaurant2);
+    
+        // Nema recenzija
+    
+        kieSession.insert(user);
+    
+        kieSession.fireAllRules();
+    
+        assertTrue(positiveReviewRecommendations.isEmpty()); // No recommendations since no positive reviews
+    }
+    
+    @Test
+    public void testNegativeReviewedRestaurantsNotIncluded() {
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+        KieSession kieSession = kieContainer.newKieSession("forwardKsession");
+    
+        List<Restaurant> positiveReviewRecommendations = new ArrayList<>();
+        kieSession.setGlobal("positiveReviewRecommendations", positiveReviewRecommendations);
+    
+        List<Restaurant> allRestaurants = new ArrayList<>();
+        kieSession.setGlobal("allRestaurants", allRestaurants);
+    
+        User user = new User();
+        user.setFirstName("John");
+    
+        Restaurant restaurant1 = new Restaurant();
+        restaurant1.setName("Italian Bistro");
+        restaurant1.setPrice(500);
+    
+        allRestaurants.add(restaurant1);
+    
+        // Negativna recenzija
+        Review review1 = new Review();
+        review1.setUser(user);
+        review1.setRestaurant(restaurant1);
+        review1.setRating(2); // Negative review
+    
+        kieSession.insert(user);
+        kieSession.insert(review1);
+    
+        kieSession.fireAllRules();
+    
+        assertFalse(positiveReviewRecommendations.contains(restaurant1)); // Should not be included
+        assertEquals(0, positiveReviewRecommendations.size());
+    }
+
+    @Test
+    public void testMixedReviewScenariosWithPseudoClock() {
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+        KieSession kieSession = kieContainer.newKieSession("forwardKsession");
+    
+        // Koristi pseudo-clock za manipulaciju vremenom
+        SessionPseudoClock clock = kieSession.getSessionClock();
+        
+        List<Restaurant> positiveReviewRecommendations = new ArrayList<>();
+        kieSession.setGlobal("positiveReviewRecommendations", positiveReviewRecommendations);
+        
+        List<Restaurant> allRestaurants = new ArrayList<>();
+        kieSession.setGlobal("allRestaurants", allRestaurants);
+        
+        User user = new User();
+        user.setFirstName("John");
+    
+        // Kreiranje restorana
+        Restaurant restaurant1 = new Restaurant();
+        restaurant1.setName("Italian Bistro");
+        restaurant1.setPrice(500);
+    
+        Restaurant restaurant2 = new Restaurant();
+        restaurant2.setName("Sushi Place");
+        restaurant2.setPrice(450);
+    
+        Restaurant restaurant3 = new Restaurant();
+        restaurant3.setName("Burger Joint");
+        restaurant3.setPrice(700);
+    
+        Restaurant restaurant4 = new Restaurant();
+        restaurant4.setName("Old Diner");
+        restaurant4.setPrice(600);
+    
+        // Dodavanje svih restorana u listu
+        allRestaurants.add(restaurant1);
+        allRestaurants.add(restaurant2);
+        allRestaurants.add(restaurant3);
+        allRestaurants.add(restaurant4);
+    
+        // Kreiranje recenzija
+        Review review1 = new Review();
+        review1.setUser(user);
+        review1.setRestaurant(restaurant1);
+        review1.setRating(5); // Pozitivna recenzija
+    
+        Review review2 = new Review();
+        review2.setUser(user);
+        review2.setRestaurant(restaurant2);
+        review2.setRating(4); // Pozitivna recenzija
+    
+        Review review3 = new Review();
+        review3.setUser(user);
+        review3.setRestaurant(restaurant3);
+        review3.setRating(2); // Negativna recenzija
+    
+        Review review4 = new Review();
+        review4.setUser(user);
+        review4.setRestaurant(restaurant4);
+        review4.setRating(4); // Pozitivna recenzija, ali postavljena u prošlost (48 sati kasnije)
+    
+        // Ubacivanje recenzije i pomeranje sata unapred kako bi se simulirala proslost
+        kieSession.insert(review4);
+
+        clock.advanceTime(49, TimeUnit.HOURS);
+
+        kieSession.insert(review1);
+        kieSession.insert(review2);
+        kieSession.insert(review3);
+    
+        // Pomeri vreme unapred za 49 sati
+        // Pokretanje pravila nakon prolaska vremena
+
+        kieSession.fireAllRules();
+        
+        
+        // Provera rezultata
+        assertTrue(positiveReviewRecommendations.contains(restaurant1)); // Treba biti uključen
+        assertTrue(positiveReviewRecommendations.contains(restaurant2)); // Treba biti uključen
+        assertFalse(positiveReviewRecommendations.contains(restaurant3)); // Negativna recenzija, ne treba biti uključen
+        assertFalse(positiveReviewRecommendations.contains(restaurant4)); // Starija od 48 sati, ne treba biti uključen
     }
 
 }
